@@ -20,7 +20,6 @@
 		019D88D81C1F7F3400A51A7C /* json_writer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 019D88D31C1F7F3400A51A7C /* json_writer.cpp */; };
 		019D88D91C1F7F3400A51A7C /* version.h.in in Resources */ = {isa = PBXBuildFile; fileRef = 019D88D41C1F7F3400A51A7C /* version.h.in */; };
 		019D88DB1C1F7F6400A51A7C /* json in Resources */ = {isa = PBXBuildFile; fileRef = 019D88DA1C1F7F6400A51A7C /* json */; };
-		019D88E21C1F9C1700A51A7C /* Tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 019D88E11C1F9C1700A51A7C /* Tile.cpp */; };
 		01B2A0351C16508700D2DBF8 /* ResourcePath.mm in Sources */ = {isa = PBXBuildFile; fileRef = 01B2A0341C16508700D2DBF8 /* ResourcePath.mm */; };
 		01B2A0381C16508700D2DBF8 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01B2A0371C16508700D2DBF8 /* main.cpp */; };
 		01B2A03F1C16508700D2DBF8 /* sansation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 01B2A03E1C16508700D2DBF8 /* sansation.ttf */; };
@@ -62,8 +61,6 @@
 		019D88D31C1F7F3400A51A7C /* json_writer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = json_writer.cpp; path = Engine/json_writer.cpp; sourceTree = "<group>"; };
 		019D88D41C1F7F3400A51A7C /* version.h.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = version.h.in; path = Engine/version.h.in; sourceTree = "<group>"; };
 		019D88DA1C1F7F6400A51A7C /* json */ = {isa = PBXFileReference; lastKnownFileType = folder; name = json; path = Engine/json; sourceTree = "<group>"; };
-		019D88E01C1F9C1700A51A7C /* Tile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Tile.h; path = Engine/Tile.h; sourceTree = "<group>"; };
-		019D88E11C1F9C1700A51A7C /* Tile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Tile.cpp; path = Engine/Tile.cpp; sourceTree = "<group>"; };
 		01B2A02F1C16508500D2DBF8 /* Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Game.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01B2A0331C16508600D2DBF8 /* Game-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Game-Info.plist"; sourceTree = "<group>"; };
 		01B2A0341C16508700D2DBF8 /* ResourcePath.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourcePath.mm; sourceTree = "<group>"; };
@@ -248,8 +245,6 @@
 				018103951C1BB48400318294 /* Components */,
 				018103901C1A891100318294 /* Entity.h */,
 				018103921C1A891100318294 /* Entity.cpp */,
-				019D88E01C1F9C1700A51A7C /* Tile.h */,
-				019D88E11C1F9C1700A51A7C /* Tile.cpp */,
 				019D88CA1C1F7E0900A51A7C /* Map.h */,
 				019D88CB1C1F7E0900A51A7C /* Map.cpp */,
 				01B2A0611C18C3B400D2DBF8 /* Scene.h */,
@@ -372,7 +367,6 @@
 				01B2A04B1C1651F600D2DBF8 /* System.cpp in Sources */,
 				01B2A0381C16508700D2DBF8 /* main.cpp in Sources */,
 				019D88D81C1F7F3400A51A7C /* json_writer.cpp in Sources */,
-				019D88E21C1F9C1700A51A7C /* Tile.cpp in Sources */,
 				01B2A0591C180D6600D2DBF8 /* Sound.cpp in Sources */,
 				019D88D71C1F7F3400A51A7C /* json_value.cpp in Sources */,
 				018103981C1BB59C00318294 /* GraphicComponent.cpp in Sources */,
