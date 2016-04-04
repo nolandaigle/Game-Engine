@@ -17,6 +17,12 @@ class GraphicComponent: public Component
 {
 private:
     Graphic graphic;
+    bool showing;
+    bool bypassCulling;
+    bool expanding;
+    float scale;
+    float transparency;
+    float targetTran;
 protected:
 public:
     GraphicComponent(System *_system);
@@ -33,6 +39,13 @@ public:
     void SetAnimation(std::string anim);
     void SetFPS(int fps );
     bool Playing();
+    bool IsBypassCulling() { return true; }
+    void BypassCulling(bool enable) { bypassCulling = enable; }
+    void Show(bool show) { showing = show; }
+    void Disappear();
+    void FadeTo(int fade);
+    void SetFade( int fade );
+    std::string GetCurrentAnimation() { return graphic.GetCurrentAnimation(); }
 };
 
 #endif /* defined(__RPG__GraphicComponent__) */

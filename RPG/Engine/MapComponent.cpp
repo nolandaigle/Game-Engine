@@ -31,7 +31,6 @@ void MapComponent::SetMap(Map *_map)
 {
     if ( _map )
     {
-        std::cout<<"Found map "<<_map->tiles.size();
         map = _map;
     }
 }

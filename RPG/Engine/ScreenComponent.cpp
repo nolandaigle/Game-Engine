@@ -18,3 +18,19 @@ ScreenComponent::~ScreenComponent()
 {
     
 }
+
+void ScreenComponent::SetPixelate( bool enabled, float cap, float increment )
+{
+    system->SetPixelate(enabled, cap, increment);
+    
+}
+
+void ScreenComponent::ScreenShake( float time, float intensity )
+{
+    system->ScreenShake( time, intensity );
+}
+
+void ScreenComponent::SlowMo( float multiplyer )
+{
+    system->SlowMo(multiplyer);
+}

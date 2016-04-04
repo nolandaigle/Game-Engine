@@ -30,11 +30,14 @@
 		01B2A05C1C180E5F00D2DBF8 /* BufferLibrary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01B2A05A1C180E5F00D2DBF8 /* BufferLibrary.cpp */; };
 		01B2A0631C18C3B400D2DBF8 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01B2A0621C18C3B400D2DBF8 /* Scene.cpp */; };
 		01B2A0671C190F7000D2DBF8 /* Ram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01B2A0661C190F7000D2DBF8 /* Ram.cpp */; };
-		01B2A06A1C190FB200D2DBF8 /* Title_Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01B2A0681C190FB200D2DBF8 /* Title_Scene.cpp */; };
+		01B2A06A1C190FB200D2DBF8 /* Game_Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01B2A0681C190FB200D2DBF8 /* Game_Scene.cpp */; };
 		01B2A0751C191D5300D2DBF8 /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = 01B2A0741C191D5300D2DBF8 /* Resources */; };
 		01BC15D71C309DD500DED70B /* SoundComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01BC15D51C309DD500DED70B /* SoundComponent.cpp */; };
 		01BC15DA1C30A70000DED70B /* EntityLibrary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01BC15D81C30A70000DED70B /* EntityLibrary.cpp */; };
+		01CCA9DC1C9BA83B009833EF /* GUIComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01CCA9DA1C9BA83B009833EF /* GUIComponent.cpp */; };
 		01D440841C24BEA700443BF9 /* MapComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01D440821C24BEA700443BF9 /* MapComponent.cpp */; };
+		01F27D7A1C9CE9E8006C5412 /* Selector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01F27D781C9CE9E8006C5412 /* Selector.cpp */; };
+		01F27D7D1C9D061D006C5412 /* FileComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01F27D7B1C9D061D006C5412 /* FileComponent.cpp */; };
 		01F6CCD31C336F410018147E /* DialogComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01F6CCD11C336F410018147E /* DialogComponent.cpp */; };
 		01F6CCD61C33804E0018147E /* Textbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01F6CCD41C33804E0018147E /* Textbox.cpp */; };
 /* End PBXBuildFile section */
@@ -81,15 +84,21 @@
 		01B2A0621C18C3B400D2DBF8 /* Scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Scene.cpp; path = Engine/Scene.cpp; sourceTree = "<group>"; };
 		01B2A0651C190F7000D2DBF8 /* Ram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ram.h; sourceTree = "<group>"; };
 		01B2A0661C190F7000D2DBF8 /* Ram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ram.cpp; sourceTree = "<group>"; };
-		01B2A0681C190FB200D2DBF8 /* Title_Scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Title_Scene.cpp; sourceTree = "<group>"; };
-		01B2A0691C190FB200D2DBF8 /* Title_Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Title_Scene.h; sourceTree = "<group>"; };
+		01B2A0681C190FB200D2DBF8 /* Game_Scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Game_Scene.cpp; sourceTree = "<group>"; };
+		01B2A0691C190FB200D2DBF8 /* Game_Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game_Scene.h; sourceTree = "<group>"; };
 		01B2A0741C191D5300D2DBF8 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = "<group>"; };
 		01BC15D51C309DD500DED70B /* SoundComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SoundComponent.cpp; path = Engine/SoundComponent.cpp; sourceTree = "<group>"; };
 		01BC15D61C309DD500DED70B /* SoundComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SoundComponent.h; path = Engine/SoundComponent.h; sourceTree = "<group>"; };
 		01BC15D81C30A70000DED70B /* EntityLibrary.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EntityLibrary.cpp; path = Engine/EntityLibrary.cpp; sourceTree = "<group>"; };
 		01BC15D91C30A70000DED70B /* EntityLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EntityLibrary.h; path = Engine/EntityLibrary.h; sourceTree = "<group>"; };
+		01CCA9DA1C9BA83B009833EF /* GUIComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GUIComponent.cpp; sourceTree = "<group>"; };
+		01CCA9DB1C9BA83B009833EF /* GUIComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUIComponent.h; sourceTree = "<group>"; };
 		01D440821C24BEA700443BF9 /* MapComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MapComponent.cpp; path = Engine/MapComponent.cpp; sourceTree = "<group>"; };
 		01D440831C24BEA700443BF9 /* MapComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MapComponent.h; path = Engine/MapComponent.h; sourceTree = "<group>"; };
+		01F27D781C9CE9E8006C5412 /* Selector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Selector.cpp; path = Engine/System/Selector.cpp; sourceTree = "<group>"; };
+		01F27D791C9CE9E8006C5412 /* Selector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Selector.h; path = Engine/System/Selector.h; sourceTree = "<group>"; };
+		01F27D7B1C9D061D006C5412 /* FileComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FileComponent.cpp; path = Engine/FileComponent.cpp; sourceTree = "<group>"; };
+		01F27D7C1C9D061D006C5412 /* FileComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FileComponent.h; path = Engine/FileComponent.h; sourceTree = "<group>"; };
 		01F6CCD11C336F410018147E /* DialogComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DialogComponent.cpp; path = Engine/DialogComponent.cpp; sourceTree = "<group>"; };
 		01F6CCD21C336F410018147E /* DialogComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DialogComponent.h; path = Engine/DialogComponent.h; sourceTree = "<group>"; };
 		01F6CCD41C33804E0018147E /* Textbox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Textbox.cpp; path = Engine/Textbox.cpp; sourceTree = "<group>"; };
@@ -126,6 +135,10 @@
 				01F6CCD21C336F410018147E /* DialogComponent.h */,
 				011C5D5D1C5AFB080060C15F /* ScreenComponent.cpp */,
 				011C5D5E1C5AFB080060C15F /* ScreenComponent.h */,
+				01CCA9DA1C9BA83B009833EF /* GUIComponent.cpp */,
+				01CCA9DB1C9BA83B009833EF /* GUIComponent.h */,
+				01F27D7B1C9D061D006C5412 /* FileComponent.cpp */,
+				01F27D7C1C9D061D006C5412 /* FileComponent.h */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -213,6 +226,8 @@
 				01B2A04A1C1651F600D2DBF8 /* System.h */,
 				01F6CCD41C33804E0018147E /* Textbox.cpp */,
 				01F6CCD51C33804E0018147E /* Textbox.h */,
+				01F27D781C9CE9E8006C5412 /* Selector.cpp */,
+				01F27D791C9CE9E8006C5412 /* Selector.h */,
 			);
 			name = System;
 			sourceTree = "<group>";
@@ -258,8 +273,8 @@
 		01B2A06B1C19107900D2DBF8 /* Game Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				01B2A0681C190FB200D2DBF8 /* Title_Scene.cpp */,
-				01B2A0691C190FB200D2DBF8 /* Title_Scene.h */,
+				01B2A0681C190FB200D2DBF8 /* Game_Scene.cpp */,
+				01B2A0691C190FB200D2DBF8 /* Game_Scene.h */,
 			);
 			name = "Game Scenes";
 			sourceTree = "<group>";
@@ -363,13 +378,15 @@
 				01D440841C24BEA700443BF9 /* MapComponent.cpp in Sources */,
 				011C5D5F1C5AFB080060C15F /* ScreenComponent.cpp in Sources */,
 				019D88CC1C1F7E0900A51A7C /* Map.cpp in Sources */,
-				01B2A06A1C190FB200D2DBF8 /* Title_Scene.cpp in Sources */,
+				01B2A06A1C190FB200D2DBF8 /* Game_Scene.cpp in Sources */,
 				01B2A04B1C1651F600D2DBF8 /* System.cpp in Sources */,
 				01B2A0381C16508700D2DBF8 /* main.cpp in Sources */,
 				019D88D81C1F7F3400A51A7C /* json_writer.cpp in Sources */,
 				01B2A0591C180D6600D2DBF8 /* Sound.cpp in Sources */,
 				019D88D71C1F7F3400A51A7C /* json_value.cpp in Sources */,
+				01F27D7D1C9D061D006C5412 /* FileComponent.cpp in Sources */,
 				018103981C1BB59C00318294 /* GraphicComponent.cpp in Sources */,
+				01F27D7A1C9CE9E8006C5412 /* Selector.cpp in Sources */,
 				018C19041C31C7EF00F2EED7 /* CollisionComponent.cpp in Sources */,
 				019D88D61C1F7F3400A51A7C /* json_reader.cpp in Sources */,
 				01BC15DA1C30A70000DED70B /* EntityLibrary.cpp in Sources */,
@@ -377,6 +394,7 @@
 				01B2A0351C16508700D2DBF8 /* ResourcePath.mm in Sources */,
 				01F6CCD61C33804E0018147E /* Textbox.cpp in Sources */,
 				01B2A0521C17648A00D2DBF8 /* Graphic.cpp in Sources */,
+				01CCA9DC1C9BA83B009833EF /* GUIComponent.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

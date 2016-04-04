@@ -40,3 +40,8 @@ void Sound::SetVolume(int vol)
 {
     sound.setVolume(vol);
 }
+
+void Sound::SetLoop(bool loop)
+{
+    sound.setLoop(loop);
+}

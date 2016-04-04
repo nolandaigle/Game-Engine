@@ -14,6 +14,7 @@
 class Ram
 {
 private:
+    //Holds all system related info
     System system;
 public:
     Ram();

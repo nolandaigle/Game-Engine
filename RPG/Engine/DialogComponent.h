@@ -28,6 +28,7 @@ public:
     void OpenDialogue();
     void HideBox();
     void SetGraphic(std::string graphic);
+    void ShowGraphic(bool show) { system->GetTextbox()->ShowGraphic(show); }
     void SetVoice(std::string voice);
 };
 

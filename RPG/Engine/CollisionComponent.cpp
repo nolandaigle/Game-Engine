@@ -51,7 +51,7 @@ bool CollisionComponent::TransformBoxColliding( TransformComponent *t1, Transfor
         return false;
     if ( t1->y > t2->y+t2->h )
         return false;
-    if ( t1->y+t1->h > t2->y )
+    if ( t1->y+t1->h < t2->y )
         return false;
     
     return true;
@@ -109,7 +109,7 @@ std::string CollisionComponent::TransformColliding( TransformComponent *t1, Tran
     return "none";
 }
 
-std::string CollisionComponent::Colliding(std::string side)
+std::string CollisionComponent::CollidingType(std::string side)
 {
     int e = 0;
     TransformComponent *transform1;
@@ -130,6 +130,35 @@ std::string CollisionComponent::Colliding(std::string side)
                 {
                     if ( TransformColliding(transform, transform1) == side )
                         return (*it)->GetType();
+                }
+            }
+        }
+        
+    }
+    return "";
+}
+
+std::string CollisionComponent::CollidingName(std::string side)
+{
+    int e = 0;
+    TransformComponent *transform1;
+    for (std::vector<CollisionComponent*>::iterator it = EntityLibrary::instance()->cList.begin() ; it != EntityLibrary::instance()->cList.end(); ++it)
+    {
+        transform1 = (*it)->transform;
+        
+        if ( transform1 )
+        {
+            if ( transform != transform1 )
+            {
+                if ( side == "all" )
+                {
+                    if ( TransformColliding(transform, transform1) != "none" )
+                        return (*it)->GetEntityName();
+                }
+                else
+                {
+                    if ( TransformColliding(transform, transform1) == side )
+                        return (*it)->GetEntityName();
                 }
             }
         }

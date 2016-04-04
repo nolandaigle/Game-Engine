@@ -3,7 +3,7 @@ bang = function(e, i)
 	e:AddComponent("TransformComponent")
 
 	graphic = e:GetGC()
-	graphic:SetImage("CityTileset.png")
+	graphic:SetImage("Tilesheet.png")
 
 	width = 128/16
 

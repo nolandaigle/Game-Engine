@@ -24,10 +24,12 @@ using namespace luabridge;
 
 Entity::Entity(int _x, int _y, System *_system, bool _updating )
 {
+    //Initialize all Entity variables.
     system = _system;
     name = "Entity";
     type = "Entity";
     gc = NULL;
+    GUIComp = NULL;
     mc = NULL;
     cc = NULL;
     dc = NULL;
@@ -45,25 +47,26 @@ Entity::Entity(int _x, int _y, System *_system, bool _updating )
 
 Entity::~Entity()
 {
-    
 }
 
 void Entity::Bang(std::string info )
 {
+    //Gets the filepath this to entity's corresponding script, by type.
     GetPath();
+    //Loads that script
     LoadScript(turnScrFile);
     RunScript(turnScrFile, luaState);
     LuaRef bang = getGlobal(luaState, "bang");
-    std::cout<<GetName();
     if ( bang )
         bang(this, info);
-     std::cout<<"LAYER IS "<<layer<<std::endl;
 }
 
 void Entity::Turn()
 {
+    //Sets all the variables for keypresses
     mInput();
     
+    //Runs the Update function in the entity's lua script
     LuaRef update = getGlobal(luaState, "update");
     if ( update )
         update(this);
@@ -71,6 +74,7 @@ void Entity::Turn()
 
 void Entity::Display()
 {
+    //If the entity is updating, run its lua script
     if ( Updating() )
     {
         LuaRef display = getGlobal(luaState, "display");
@@ -78,7 +82,7 @@ void Entity::Display()
             display(this);
     }
     else
-    {
+    { //Otherwise just draw the sprite attached to the Graphics Component
         if ( GetGC() && GetTransform() )
         {
             GetGC()->Display(GetTransform()->x, GetTransform()->y);
@@ -88,15 +92,37 @@ void Entity::Display()
 
 void Entity::Collapse()
 {
-    if ( gc )
+    //Delete all entity components
+    if (gc)
         delete gc;
+    gc = NULL;
+    if (GUIComp)
+        delete GUIComp;
+    GUIComp = NULL;
+    if (mc)
+        delete mc;
+    mc = NULL;
+    if (cc)
+        delete cc;
+    cc = NULL;
+    if (dc)
+        delete dc;
+    dc = NULL;
+    if (sc)
+        delete sc;
+    sc = NULL;
+    if (scrC)
+        delete scrC;
+    scrC = NULL;
+    if (transform)
+        delete transform;
+    transform = NULL;
 }
 
 void Entity::Input(sf::Event *event)
 {
     if ( event->type == sf::Event::KeyPressed )
     {
-        
         LuaRef onKeyPress = getGlobal(luaState, "onKeyPress");
         if ( onKeyPress )
         {
@@ -304,13 +330,16 @@ void Entity::LoadScript(char* filename)
     .addConstructor<void(*) (System*)>()
     .addFunction("GetName", &Component::GetName)
     .addFunction("Display", &Component::Display)
+    .addFunction("GetEntityName", &Component::GetEntityName)
     .endClass()
     
     //    TransformComponent
     .beginClass<TransformComponent>("TransformComponent")
     .addConstructor<void(*) (System*)>()
+    .addFunction("GetEntityName", &Component::GetEntityName)
     .addFunction("CenterView", &TransformComponent::CenterView)
     .addFunction("SetSize", &TransformComponent::SetSize )
+    
     .addData("x", &TransformComponent::x)
     .addData("y", &TransformComponent::y)
     .endClass()
@@ -318,16 +347,20 @@ void Entity::LoadScript(char* filename)
     //    CollisionComponent
     .beginClass<CollisionComponent>("CollisionComponent")
     .addConstructor<void(*) (System*,TransformComponent*)>()
+    .addFunction("GetEntityName", &Component::GetEntityName)
     .addFunction("SetType", &CollisionComponent::SetType)
     .addFunction("GetType", &CollisionComponent::GetType)
     .addFunction("SetTransform", &CollisionComponent::SetTransform)
-    .addFunction("Colliding", &CollisionComponent::Colliding)
+    .addFunction("CollidingType", &CollisionComponent::CollidingType)
+    .addFunction("CollidingName", &CollisionComponent::CollidingName)
     .endClass()
     
     //GraphicComponent
     .beginClass<GraphicComponent>("GraphicComponent")
     .addConstructor<void(*) (System*)>()
+    .addFunction("GetEntityName", &Component::GetEntityName)
     .addFunction("GetName", &GraphicComponent::GetName)
+    .addFunction("GetCurrentAnimation", &GraphicComponent::GetCurrentAnimation)
     .addFunction("Display", &GraphicComponent::Display)
     .addFunction("SetImage", &GraphicComponent::SetImage)
     .addFunction("SetRotation", &GraphicComponent::SetRotation)
@@ -338,57 +371,107 @@ void Entity::LoadScript(char* filename)
     .addFunction("AddFrame", &GraphicComponent::AddFrame)
     .addFunction("Play", &GraphicComponent::Play)
     .addFunction("Playing", &GraphicComponent::Playing)
+    .addFunction("Show", &GraphicComponent::Show )
+    .addFunction("Disappear", &GraphicComponent::Disappear)
+    .addFunction("SetFade", &GraphicComponent::SetFade)
+    .addFunction("FadeTo", &GraphicComponent::FadeTo)
+    .addFunction("BypassCulling", &GraphicComponent::BypassCulling)
+    .addFunction("IsBypassCulling", &GraphicComponent::IsBypassCulling)
     .addFunction("Stop", &GraphicComponent::Stop)
     .endClass()
+    
+    //GUIComponent
+    .beginClass<GUIComponent>("GUIComponent")
+    .addConstructor<void(*) (int,int,System*)>()
+    .addFunction("Display", &GUIComponent::Display)
+    .addFunction("SetString", &GUIComponent::SetString)
+    .addFunction("SetColor", &GUIComponent::SetColor)
+    .addFunction("AddSelector", &GUIComponent::AddSelector)
+    .addFunction("AddOption", &GUIComponent::AddOption)
+    .addFunction("Swipe", &GUIComponent::Swipe)
+    .addFunction("Select", &GUIComponent::Select)
+    .addFunction("GetSelected", &GUIComponent::GetSelected)
+    .endClass()
+
     
     //SoundComponent
     .beginClass<SoundComponent>("SoundComponent")
     .addConstructor<void(*) (System*)>()
+    .addFunction("GetEntityName", &Component::GetEntityName)
     .addFunction("Load", &SoundComponent::Load)
     .addFunction("Play", &SoundComponent::Play)
     .addFunction("Stop", &SoundComponent::Stop)
     .addFunction("SetVolume", &SoundComponent::SetVolume)
+    .addFunction("SetLoop", &SoundComponent::SetLoop)
     .endClass()
     
     
     //Dialog Component
     .beginClass<DialogComponent>("DialogComponent")
     .addConstructor<void(*) (System*)>()
+    .addFunction("GetEntityName", &Component::GetEntityName)
     .addFunction("PushMessage", &DialogComponent::PushMessage)
     .addFunction("OpenDialogue", &DialogComponent::OpenDialogue)
     .addFunction("HideBox", &DialogComponent::HideBox)
     .addFunction("SetGraphic", &DialogComponent::SetGraphic)
     .addFunction("SetVoice", &DialogComponent::SetVoice)
+    .addFunction("ShowGraphic", &DialogComponent::ShowGraphic)
     .endClass()
     
     //    MapComponent
     .beginClass<MapComponent>("MapComponent")
     .addConstructor<void(*) (System*)>()
+    .addFunction("GetEntityName", &Component::GetEntityName)
     .addFunction("SetMap", &MapComponent::SetMap)
     .addFunction("Multiply", &MapComponent::Multiply)
+    .endClass()
+    
+    //    ScreenComponent
+    .beginClass<ScreenComponent>("ScreenComponent")
+    .addConstructor<void(*) (System*)>()
+    .addFunction("GetEntityName", &Component::GetEntityName)
+    .addFunction("SetPixelate", &ScreenComponent::SetPixelate)
+    .addFunction("ScreenShake", &ScreenComponent::ScreenShake)
+    .addFunction("SlowMo", &ScreenComponent::SlowMo)
+    .endClass()
+    
+    //    FileComponent
+    .beginClass<FileComponent>("FileComponent")
+    .addConstructor<void(*) (System*)>()
+    .addFunction("GetEntityName", &Component::GetEntityName)
+    .addFunction("OpenFile", &FileComponent::OpenFile)
+    .addFunction("CloseFile", &FileComponent::CloseFile)
+    .addFunction("GetLine", &FileComponent::GetLine)
     .endClass()
     
     //Entity
     .beginClass<Entity>("Entity")
     .addConstructor<void(*)(int,int,System*)>()
     .addFunction("AddComponent", &Entity::AddComponent)
+    .addFunction("CreateEntity", &Entity::CreateEntity)
+    .addFunction("RemoveEntity", &Entity::RemoveEntity)
+    .addFunction("SetScreenColor", &Entity::SetScreenColor)
     .addFunction("GetMap", &Entity::GetMap)
+    .addFunction("GetName", &Entity::GetName)
     .addFunction("SetLayer", &Entity::SetLayer)
     .addFunction("GetLayer", &Entity::GetLayer)
     .addFunction("PrintMessage", &Entity::PrintMessage)
     .addFunction("KeyPressed", &Entity::KeyPressed)
-    .addFunction("Colliding", &Entity::Colliding)
     .addFunction("Signal", &Entity::Signal)
     .addFunction("Message", &Entity::Message)
-    .addFunction("FindEntity", &Entity::FindEntity)
+    .addFunction("GetEntity", &Entity::GetEntity)
     .addFunction("GetGC", &Entity::GetGC)
+    .addFunction("GetGUI", &Entity::GetGUI)
     .addFunction("GetSC", &Entity::GetSC)
     .addFunction("GetCC", &Entity::GetCC)
     .addFunction("GetDC", &Entity::GetDC)
+    .addFunction("GetFC", &Entity::GetFC)
+    .addFunction("GetScreen", &Entity::GetScreen)
     .addFunction("GetDeltaTime", &Entity::GetDeltaTime)
     .addFunction("GetTransform", &Entity::GetTransform)
     .addFunction("Updating", &Entity::Updating)
     .addFunction("SetUpdate", &Entity::SetUpdate )
+    .addFunction("Sleep", &Entity::Sleep )
     .endClass();
 }
 
@@ -412,7 +495,6 @@ bool Entity::RunScript(char* filename, lua_State *s)
 
 void Entity::SetName(std::string _name)
 {
-    std::cout<<name<<" renamed to "<<_name<<std::endl;
     name = _name;
     
 }
@@ -420,7 +502,6 @@ void Entity::SetName(std::string _name)
 void Entity::SetType(std::string _type)
 {
     type = _type;
-    std::cout<<name<<" retyped to "<<type<<std::endl;
 }
 
 void Entity::SetMap(Map *_map)
@@ -437,19 +518,47 @@ void Entity::SetLayer(int l)
 void Entity::AddComponent(std::string _component)
 {
     if ( _component == "GraphicComponent")
+    {
         gc = new GraphicComponent(system);
+        gc->SetEntityName(GetName());
+    }
+    if ( _component == "GUIComponent")
+    {
+        GUIComp = new GUIComponent( x, y, system);
+        GUIComp->SetEntityName(GetName());
+    }
     if ( _component == "TransformComponent")
     {
         transform = new TransformComponent(system);
         transform->x = x;
         transform->y = y;
+        transform->SetEntityName(GetName());
     }
     if ( _component == "MapComponent")
+    {
         mc = new MapComponent(system);
+        mc->SetEntityName(GetName());
+    }
     if ( _component == "SoundComponent")
+    {
         sc = new SoundComponent(system);
+        sc->SetEntityName(GetName());
+    }
     if ( _component == "DialogComponent")
+    {
         dc = new DialogComponent(system);
+        dc->SetEntityName(GetName());
+    }
+    if ( _component == "ScreenComponent")
+    {
+        scrC = new ScreenComponent(system);
+        scrC->SetEntityName(GetName());
+    }
+    if ( _component == "FileComponent")
+    {
+        fC = new FileComponent(system);
+        fC->SetEntityName(GetName());
+    }
     if ( _component == "CollisionComponent")
     {
         if ( transform == NULL )
@@ -457,10 +566,14 @@ void Entity::AddComponent(std::string _component)
             transform = new TransformComponent(system);
             transform->x = x;
             transform->y = y;
+            transform->SetEntityName(GetName());
         }
         
         if ( transform )
+        {
             cc = new CollisionComponent(system, transform);
+            cc->SetEntityName(GetName());
+        }
         else
             std::cout<<"Couldn't add Collision, no transform."<<std::endl;
     }
@@ -484,14 +597,14 @@ void Entity::PrintMessage(std::string message)
     std::cout<<message<<std::endl;
 }
 
-Entity *Entity::FindEntity(std::string name)
+Entity *Entity::GetEntity(std::string name)
 {
-    return EntityLibrary::instance()->FindEntity(name);
+    return EntityLibrary::instance()->GetEntity(name);
 }
 
 void Entity::Signal(std::string signal)
 {
-    system->Signal(signal);
+    EntityLibrary::instance()->Signal(signal);
 }
 
 void Entity::RecieveSignal(std::string signal)
@@ -503,7 +616,7 @@ void Entity::RecieveSignal(std::string signal)
 
 void Entity::Message(std::string entity, std::string message)
 {
-    system->Message(entity, message);
+    EntityLibrary::instance()->Message(entity, message);
 }
 
 void Entity::RecieveMessage(std::string message)
@@ -513,6 +626,15 @@ void Entity::RecieveMessage(std::string message)
         recieveMessage(this, message);
 }
 
-std::string Entity::Colliding()
+void Entity::RemoveEntity(std::string e)
 {
+    EntityLibrary::instance()->RemoveEntity(e);
+}
+
+std::string Entity::CreateEntity( int _x, int _y, std::string _name, std::string info="" )
+{
+    Entity *e;
+    e = EntityLibrary::instance()->AddEntity(_x, _y, _name, true, info);
+    EntityLibrary::instance()->Sort("Layer");
+    return e->GetName();
 }

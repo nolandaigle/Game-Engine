@@ -17,6 +17,10 @@ protected:
 public:
     ScreenComponent(System *_system);
     ~ScreenComponent();
+    void SetPixelate( bool enabled, float cap, float increment );
+    void ScreenShake( float time, float intensity );
+    void SlowMo( float multiplyer );
+    
 };
 
 #endif /* defined(__Game__ScreenComponent__) */

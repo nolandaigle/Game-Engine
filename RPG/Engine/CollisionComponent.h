@@ -21,7 +21,8 @@ public:
     CollisionComponent(System *_system, TransformComponent* _transform);
     ~CollisionComponent();
     TransformComponent *transform;
-    std::string Colliding(std::string side);
+    std::string CollidingType(std::string side);
+    std::string CollidingName(std::string side);
     bool TransformBoxColliding( TransformComponent *t1, TransformComponent *t2 );
     std::string TransformColliding( TransformComponent *t1, TransformComponent *t2 );
     std::string GetType();

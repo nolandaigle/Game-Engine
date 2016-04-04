@@ -17,6 +17,7 @@ class Textbox
 private:
     sf::Font font;
     bool showing;
+    bool grShowing;
     int y[2];
     
     int currentChar;
@@ -49,6 +50,7 @@ public:
     
     void SetGraphic(std::string file);
     
+    bool ShowGraphic(bool showing) { grShowing = showing; }
     bool IsShowing() { return showing; }
     
     sf::RectangleShape cinematic[3];

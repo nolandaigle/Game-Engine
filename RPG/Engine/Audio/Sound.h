@@ -23,6 +23,7 @@ public:
     void Stop();
     void Load(std::string _file);
     void SetVolume(int vol);
+    void SetLoop(bool loop);
 };
 
 #endif /* defined(__RPG__Sound__) */

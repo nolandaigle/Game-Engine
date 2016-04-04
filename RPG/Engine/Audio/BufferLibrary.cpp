@@ -19,15 +19,15 @@ void BufferLibrary::AddBuffer(std::string filename)
         buffer[filename] = new sf::SoundBuffer();
         if (!buffer[filename]->loadFromFile(resourcePath()+filename))
         {
-            std::cout<<"Failed to load "<<resourcePath()+filename<<std::endl;
         }
         else
         {
-            std::cout<<"Added buffer "<<filename<<" to buffer library."<<std::endl;
         }
     }
     else
-        std::cout<<"Buffer "<<filename<<" already exists."<<std::endl;
+    {
+     //   std::cout<<"Buffer "<<filename<<" already exists."<<std::endl;
+    }
 }
 
 void BufferLibrary::RemoveBuffer(std::string filename)
@@ -36,6 +36,5 @@ void BufferLibrary::RemoveBuffer(std::string filename)
     {
         delete buffer[filename];
         buffer.erase(filename);
-        std::cout<<"Removed buffer "<<filename<<" from buffer library."<<std::endl;
     }
 } 

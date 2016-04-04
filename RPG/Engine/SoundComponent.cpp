@@ -16,6 +16,7 @@ SoundComponent::SoundComponent(System *_system) : Component(_system)
 
 SoundComponent::~SoundComponent()
 {
+    sound.Stop();
 }
 
 void SoundComponent::Play()
@@ -36,4 +37,9 @@ void SoundComponent::Load(std::string file)
 void SoundComponent::SetVolume(int vol)
 {
     sound.SetVolume(vol);
+}
+
+void SoundComponent::SetLoop(bool loop)
+{
+    sound.SetLoop(loop);
 }

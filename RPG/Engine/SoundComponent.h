@@ -26,6 +26,7 @@ public:
     void Play();
     void Stop();
     void SetVolume(int vol);
+    void SetLoop(bool loop);
 };
 
 #endif /* defined(__RPG__SoundComponent__) */

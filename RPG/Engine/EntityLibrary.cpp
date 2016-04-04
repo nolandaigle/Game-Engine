@@ -8,27 +8,24 @@
 
 #include "EntityLibrary.h"
 
+//global singleton
 EntityLibrary *EntityLibrary::s_instance = NULL;
-
 
 Entity *EntityLibrary::AddEntity(int x, int y, std::string name, bool updating, std::string info)
 {
+    //The entity has been changed
+    changed = true;
     if ( system )
     {
-        if ( entities[name] == NULL )
+        //If an entity with this name already exists
+        if ( entities[name] )
         {
-            entities[name] = new Entity(x, y, system, updating);
-            entities[name]->SetName(name);
-            entities[name]->SetType(name);
-            entities[name]->Bang(info);
-            return entities[name];
-        }
-        else
-        {
-            
+            //the number of entities of this type
             int num = 0;
+            //Sets the type of the entity to its name
             std::string type = name;
             
+            /* --- Check how many entities share the same type in the library and add that number to the end of its name -- */
             std::ostringstream oss;
             oss<<name;
             
@@ -38,15 +35,36 @@ Entity *EntityLibrary::AddEntity(int x, int y, std::string name, bool updating, 
                 oss<<name<<"_"<<num;
                 num += 1;
             }
+            /* --- --- -- */
+            
+            //Create a new Entity with that name and the given type, x, y, and whether or not the entity is updated every frame (some entities, like tiles, are for the most part static and do not need updating every frame)
             entities[oss.str()] = new Entity(x, y, system, updating);
             entities[oss.str()]->SetType(type);
             entities[oss.str()]->SetName(oss.str());
+            //Initialize the entity
             entities[oss.str()]->Bang(info);
+            //Return a pointer to the newly created entity
             return entities[oss.str()];
         }
-        std::cout<<"Added Entity "<<name<<std::endl;
+        else //Otherwise...
+        {
+            //Create a new Entity the given name, type, x, y, and whether or not the entity is updated every frame
+            entities[name] = new Entity(x, y, system, updating);
+            entities[name]->SetName(name);
+            entities[name]->SetType(name);
+            //Initialize the entity
+            entities[name]->Bang(info);
+            //Return a pointer to the newly created entity
+            return entities[name];
+        }
     }
     return NULL;
+}
+
+EntityLibrary::EntityLibrary()
+{
+    fpsTimer = 0;
+    fps = .016;
 }
 
 void EntityLibrary::SetMap(Map *map)
@@ -60,7 +78,7 @@ void EntityLibrary::SetMap(Map *map)
 
 
 void EntityLibrary::Bang()
-{
+{    
     for (std::map<std::string, Entity*>::iterator it = entities.begin() ; it != entities.end(); ++it)
     {
         it->second->Bang();
@@ -69,57 +87,69 @@ void EntityLibrary::Bang()
 
 void EntityLibrary::Input(sf::Event *event)
 {
-    for (std::vector<Entity*>::iterator it = uList.begin() ; it != uList.end(); ++it)
+    for (std::map<std::string, Entity*>::iterator it = entities.begin() ; it != entities.end(); ++it)
     {
-        if ( (*it)->GetTransform() )
-        {
-            if ( (*it)->GetTransform()->x > system->GetView()->getCenter().x -system->size*1024/2 && (*it)->GetTransform()->y > system->GetView()->getCenter().y -system->size*1024/2 && (*it)->GetTransform()->x < system->GetView()->getCenter().x +system->size*1024/2 && (*it)->GetTransform()->y < system->GetView()->getCenter().y+system->size*1024/2 )
-                (*it)->Input(event);
-        }
-        else
-            (*it)->Input(event);
+        if ( it->second->Updating() )
+            it->second->Input(event);
     }
-}
-
-Entity *EntityLibrary::FindEntity(std::string name)
-{
-    return entities[name];
 }
 
 void EntityLibrary::Turn()
 {
-    for (std::vector<Entity*>::iterator it = uList.begin() ; it != uList.end(); ++it)
+    fpsTimer += system->DeltaTime();
+    if ( fpsTimer > fps )
     {
-        if ( (*it)->GetTransform() )
+        fpsTimer = 0;
+        for (std::map<std::string, Entity*>::iterator it = entities.begin() ; it != entities.end(); ++it)
         {
-            if ( (*it)->GetTransform()->x > system->GetView()->getCenter().x -system->size*1024/2 && (*it)->GetTransform()->y > system->GetView()->getCenter().y -system->size*1024/2 && (*it)->GetTransform()->x < system->GetView()->getCenter().x +system->size*1024/2 && (*it)->GetTransform()->y < system->GetView()->getCenter().y+system->size*1024/2 )
-                (*it)->Turn();
-        }
-        else
-        {
-            (*it)->Turn();
+            if (it->second->Updating())
+            {
+                it->second->Turn();
+            }
         }
     }
+    
+    std::cout<<"Entities: "<<entities.size()<<std::endl;
 }
 
 void EntityLibrary::Display()
 {
-    for (std::vector<Entity*>::iterator it = dList.begin() ; it != dList.end(); ++it)
+    //Loops through each draw layer
+    for ( int i = 0; i <= 3; i++ )
     {
-        if ( (*it)->GetTransform() )
+        //loops through all entities
+        for (std::map<std::string, Entity*>::iterator it = entities.begin() ; it != entities.end(); ++it)
         {
-            if ( (*it)->GetTransform()->x+(*it)->GetTransform()->w > system->GetView()->getCenter().x -system->size*1024/2 && (*it)->GetTransform()->y+(*it)->GetTransform()->h > system->GetView()->getCenter().y -system->size*1024/2 && (*it)->GetTransform()->x < system->GetView()->getCenter().x +system->size*1024/2 && (*it)->GetTransform()->y < system->GetView()->getCenter().y+system->size*1024/2 )
-                (*it)->Display();
+            //If the entity has a Graphic Component and it is on the current layer
+            if ( ( it->second->GetGC() || it->second->GetGUI() ) && it->second->GetLayer() == i )
+            {
+                //If it has a transform, check if transform is within screen limits
+                if ( it->second->GetTransform() )
+                {
+                    if ( OnScreen(it->second->GetTransform()) == true || it->second->GetGC()->IsBypassCulling() == true )
+                        it->second->Display();
+                }
+                else //Otherwise just display
+                    it->second->Display();
+            }
         }
-        else
-            (*it)->Display();
+        //If the entity list has been changed, update the collider list and reset changed variable
+        if ( changed == true )
+        {
+            Sort("Layer");
+            changed = false;
+        }
     }
 }
 
 void EntityLibrary::RemoveEntity(std::string name)
 {
+    //Entity list has been changed
+    changed = true;
+    //If there is an entity of that name, deconstruct, delete, and remove it from the library
     if ( entities[name] != NULL )
     {
+        entities[name]->Collapse();
         delete entities[name];
         entities[name] = NULL;
         entities.erase(name);
@@ -130,6 +160,7 @@ void EntityLibrary::Clear()
 {
     for (std::map<std::string, Entity*>::iterator it = entities.begin() ; it != entities.end(); ++it)
     {
+        it->second->Collapse();
         delete it->second;
         it->second = NULL;
     }
@@ -138,42 +169,70 @@ void EntityLibrary::Clear()
 
 void EntityLibrary::Signal(std::string signal)
 {
-    for (std::vector<Entity*>::iterator it = uList.begin() ; it != uList.end(); ++it)
+    for (std::map<std::string, Entity*>::iterator it = entities.begin() ; it != entities.end(); ++it)
     {
-        (*it)->RecieveSignal(signal);
+        if ( it->second->Updating() )
+            it->second->RecieveSignal(signal);
     }
 }
 
 void EntityLibrary::Message(std::string entity, std::string message)
 {
+    //If you send a message to the entity "Map" then the message will be interpreted as the map you would like to change to
     if ( entity == "Map" )
         nextMap = message;
-    else
-        entities[entity]->RecieveMessage(message);
+    else if ( entity == "Pause" )
+        system->Pause();
+    else if ( entity == "Music" )
+    {
+        if ( message == "Play" )
+            system->PlayMusic();
+        else if ( message == "Stop" )
+            system->StopMusic();
+        else
+            system->SetMusic(message);
+    }
+    else //Otherwise, send the message to the specified entity
+    {
+        if ( entities[entity] != NULL)
+            entities[entity]->RecieveMessage(message);
+        else
+            std::cout<<"Could not find entity"<<std::endl;
+    }
 }
 
 void EntityLibrary::Sort(std::string sortby)
 {
-    uList.clear();
-    dList.clear();
+    //Basically just sorts the collider list now. Originally also sorted entities by display order, but that is now obsolete.
     cList.clear();
-    if ( sortby == "Layer" )
+    for (std::map<std::string, Entity*>::iterator it = entities.begin() ; it != entities.end(); ++it)
     {
-        for ( int f = 0; f < 3; f++ )
+        if ( it->second->GetCC() )
         {
-            for (std::map<std::string, Entity*>::iterator it = entities.begin() ; it != entities.end(); ++it)
-            {
-                if ( it->second->GetLayer() == f )
-                {
-                    if ( it->second->Updating())
-                        uList.push_back(it->second);
-                    if ( it->second->GetGC())
-                        dList.push_back(it->second);
-                    if ( it->second->GetCC() )
-                        cList.push_back(it->second->GetCC());
-                }
-            }
+            cList.push_back(it->second->GetCC());
         }
-        
     }
+    
+    std::cout<<"Colliders: "<<cList.size()<<std::endl;
+}
+
+bool EntityLibrary::OnScreen(TransformComponent *t)
+{
+    sf::Vector2f viewCenter = system->GetView()->getCenter();
+    sf::Vector2f halfExtents = system->GetView()->getSize() / 2.0f;
+    sf::Vector2f translation = viewCenter - halfExtents;
+    
+    int rx = static_cast<int>(translation.x);
+    int ry = static_cast<int>(translation.y);
+    
+    if ( t->x > rx+system->resolution_w )
+        return false;
+    if ( t->x+t->w < rx )
+        return false;
+    if ( t->y > ry+system->resolution_h )
+        return false;
+    if ( t->y+t->h < ry )
+        return false;
+    
+    return true;
 }

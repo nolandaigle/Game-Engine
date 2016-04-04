@@ -13,6 +13,7 @@
 Textbox::Textbox()
 {
     showing = false;
+    grShowing = true;
     
     y[0] = -40;
     y[1] = 241;
@@ -28,7 +29,7 @@ Textbox::Textbox()
     cinematic[1].setFillColor(sf::Color::Black);
     cinematic[2] = sf::RectangleShape(sf::Vector2f(320,240));
     cinematic[2].setFillColor(sf::Color( 255, 255, 255, fade ));
-    if ( !font.loadFromFile(resourcePath()+"/Resources/Fonts/Hellovetica.ttf"))
+    if ( !font.loadFromFile(resourcePath()+"/Resources/Fonts/lunchds.ttf"))
     {
     }
     
@@ -68,7 +69,7 @@ void Textbox::Update(int screenx, int screeny, float dt)
         cinematic[2].setPosition(screenx, screeny);
         
         //FACE
-        graphic->SetPosition(screenx+50, screeny+75);
+        graphic->SetPosition(screenx+40, screeny+75);
         graphic->GetSprite()->setColor(sf::Color( 255, 255, 255, fade ) );
         graphic->Update();
         
@@ -123,15 +124,18 @@ void Textbox::Update(int screenx, int screeny, float dt)
 
 void Textbox::Display(sf::RenderWindow *window)
 {
-    window->draw(cinematic[2]);
-    window->draw(cinematic[0]);
-    window->draw(cinematic[1]);
-    if ( GetGraphic() )
-        window->draw(*GetGraphic()->GetSprite());
-    
-    for (std::vector<sf::Text>::iterator it = line.begin() ; it != line.end(); ++it)
+    if ( showing )
     {
-        window->draw((*it));
+        window->draw(cinematic[2]);
+        window->draw(cinematic[0]);
+        window->draw(cinematic[1]);
+        if ( GetGraphic() && grShowing )
+            window->draw(*GetGraphic()->GetSprite());
+        
+        for (std::vector<sf::Text>::iterator it = line.begin() ; it != line.end(); ++it)
+        {
+            window->draw((*it));
+        }
     }
 }
 
@@ -140,7 +144,8 @@ void Textbox::PushMessage(std::string message)
     Clear();
     text = message;
     
-    line.push_back(sf::Text("", font, 8));
+    line.push_back(sf::Text("", font, 24));
+    line[line.size()-1].setScale(.5, .5);
 }
 
 void Textbox::SetGraphic(std::string file )

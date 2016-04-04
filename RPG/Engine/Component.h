@@ -17,6 +17,7 @@ class Component
 private:
 protected:
     std::string name;
+    std::string entityName;
     System *system;
 public:
     Component(System *_system);
@@ -27,6 +28,8 @@ public:
     void Display();
     
     std::string GetName() { return name; }
+    void SetEntityName(std::string ename) { entityName = ename; }
+    std::string GetEntityName() { return entityName; }
 };
 
 #endif /* defined(__RPG__Component__) */

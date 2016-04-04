@@ -18,8 +18,12 @@
 
 int main( int argc, const char* argv[] )
 {
+    //Create program
     Ram ram;
+    //Initialize program
     ram.Bang();
+    //Update program
     ram.Turn();
+    //Close program when finished
     ram.Collapse();
 }

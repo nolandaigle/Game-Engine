@@ -26,6 +26,7 @@ public:
     std::vector<Entity*> tiles;
     
     void Load(std::string _filename);
+    void Clear();
 };
 
 #endif /* defined(__RPG__Map__) */

@@ -15,12 +15,14 @@
 #include <string>
 #include "luabridge/luabridge.h"
 #include "GraphicComponent.h"
+#include "GUIComponent.h"
 #include "SoundComponent.h"
 #include "TransformComponent.h"
 #include "MapComponent.h"
 #include "CollisionComponent.h"
 #include "DialogComponent.h"
 #include "ScreenComponent.h"
+#include "FileComponent.h"
 #include "Map.h"
 
 
@@ -31,30 +33,35 @@ private:
     luabridge::lua_State* luaState;
     char *turnScrFile;
     
-    //Entity INFO
+    /* --- Entity INFO --- */
     std::string name;
     std::string type;
     System *system;
     int layer;
     int x, y;
     bool updating;
+    /* --- --- --- */
     
     //Key INFO
     std::map<std::string,bool> key;
     
-    //Components
+    /* --- Component pointerse --- */
     GraphicComponent *gc;
+    GUIComponent *GUIComp;
     TransformComponent *transform;
     MapComponent *mc;
     SoundComponent *sc;
     CollisionComponent *cc;
     DialogComponent *dc;
     ScreenComponent *scrC;
+    FileComponent *fC;
+    /* --- --- --- */
 protected:
 public:
     Entity(int _x, int _y, System *_system, bool _updating = true);
     ~Entity();
     
+    //Usual structure functions
     virtual void Bang(std::string info = "");
     virtual void Turn();
     virtual void Display();
@@ -66,7 +73,7 @@ public:
     bool KeyPressed(std::string key);
     
     //SCRIPTING
-    virtual void LoadScript(char* filename);
+    void LoadScript(char* filename);
     bool RunScript(char* filename, luabridge::lua_State *s);
     
     //Set Functions
@@ -76,6 +83,7 @@ public:
     void SetLayer(int l);
     void SetUpdate(bool update) { updating = update; }
     
+    
     void AddComponent(std::string _component);
     
     //Get Functions
@@ -83,24 +91,30 @@ public:
     std::string GetPath();
     int GetLayer() { return layer; }
     std::string GetName() { return name; }
+    
     MapComponent *GetMap() { return mc; }
     SoundComponent *GetSC() { return sc; }
     CollisionComponent *GetCC() { return cc; }
     DialogComponent *GetDC() { return dc; }
     GraphicComponent *GetGC() { return gc; }
+    GUIComponent *GetGUI() { return GUIComp; }
     TransformComponent *GetTransform() { return transform; }
     MapComponent *GetMC() { return mc; }
+    ScreenComponent *GetScreen() { return scrC; }
+    FileComponent *GetFC() { return fC; }
     float GetDeltaTime() { return system->DeltaTime(); }
     
     //Communication
     virtual void PrintMessage(std::string message);
-    Entity* FindEntity(std::string name);
+    Entity* GetEntity(std::string name);
     void Signal( std::string signal );
     void RecieveSignal(std::string signal);
     void Message( std::string entity, std::string message );
     void RecieveMessage(std::string message);
-    
-    std::string Colliding();
+    void RemoveEntity(std::string e);
+    std::string CreateEntity(int _x, int _y, std::string _name, std::string info);
+    void Sleep(float time) { system->SetSleep(time); }
+    void SetScreenColor( int r, int g, int b ) { system->SetScreenColor( r, g, b ); }
 };
 
 #endif /* defined(__RPG__Entity__) */

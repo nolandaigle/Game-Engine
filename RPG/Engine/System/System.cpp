@@ -8,43 +8,213 @@
 
 #include "System.h"
 #include "EntityLibrary.h"
-void System::Load()
+#include "Resourcepath.hpp"
+
+bool System::Load()
 {
-    window = new sf::RenderWindow( sf::VideoMode(768, 720), "*_*" );
-    view = new sf::View(sf::FloatRect(0, 0, 256, 240));
+    //Create new SF::Render window at 3x scale
+    window = new sf::RenderWindow( sf::VideoMode(resolution_w*2, resolution_h*2), "*_*" );
+    //Create new SF::View with the size of the game's resolution
+    view = new sf::View(sf::FloatRect(0, 0, resolution_w, resolution_h));
+    //Tell window to draw the view
     window->setView(*view);
+    //Cap framerate at 60
+    window->setFramerateLimit(60);
+    //Set KeyRepeat to false
+    window->setKeyRepeatEnabled(false);
+    
+    //Load shader from file and set parameters
+    if (!shader.loadFromFile(resourcePath()+"Resources/Shaders/pixelate.frag", sf::Shader::Fragment))
+        return false;
+    shader.setParameter("pixel_threshold", shaderOnset);
+    
+    //Return false if there is trouble loading the window or view
+    if (!window || !view )
+        return false;
+    
+    music.setLoop(true);
+    
+    return true;
 }
 
 System::System()
 {
-    size = 1;
+    //Set the view size to a 1:1 ratio with resolution
+    viewSize = 1;
+    //Set inital DeltaTime value to 0
     dt = 0;
+    //Set initial FPS
+    fps = 0;
+    
+    //Set initial shader information
+    shaderOnset = 0;    //What the actual shader value holds
+    shaderCap = .25;    //What number the shaderOnset is moving toward
+    shaderEnabled = false;  //Whether or not the shader in enabled
+    shaderIncrement = .001; //The increment amount that the shader moves toward the shaderCap
+    
+    //Set screen resolution
+    resolution_w = 960;
+    resolution_h = 540;
+    
+    //Screenshake stuff
+    shaking = false;
+    shakeX = 10;
+    shakeY = 10;
+    shakeTimer = 0;
+    xvel = 0;
+    yvel = 0;
+    
+    //SLOWMO
+    slowing = false;
+    slowspeed = .0;
+    targetslow = 0;
+    
+    screencolor = sf::Color(253,244,235);
+    
+    //Debug stuff
+    debugging = false;
+    paused = false;
 }
 
 System::~System()
 {
+    //Delete window and view if they have been loaded
     if ( window != NULL )
         delete window;
     if ( view != NULL )
         delete view;
 }
 
+
+void System::SetPixelate( bool enabled, float cap, float increment )
+{
+    shaderEnabled = enabled;
+    shaderCap = cap;
+    shaderIncrement = increment;
+}
+
 void System::Display()
 {
-    GetView()->setSize(size*256, size*240);
+    //Tell window to draw the view
+    window->setView(*view);
+    
+    if ( shaking )
+    {
+        float x = GetView()->getCenter().x;
+        float y = GetView()->getCenter().y;
+        
+        if ( shakeTimer > 0 )
+        {
+            shakeTimer -= DeltaTime();
+            
+            if ( x < shakeX )
+                xvel += 1;
+            else if ( x > shakeX )
+            xvel -= 1;
+            
+            if ( y < shakeY )
+                yvel += 1;
+            else if ( y > shakeY )
+                yvel -= 1;
+            
+            x += xvel;
+            y += yvel;
+        }
+        else if ( x - resolution_w/2 < 2 || x - resolution_w/2 > -2 )
+        {
+            x += Lerp( x, resolution_w/2, .1 );
+            y += Lerp( y, resolution_h/2, .1 );
+        }
+        else
+        {
+            view->setCenter(0, 0);
+        }
+        
+        view->setCenter(x, y);
+    }
+    
+    if ( shaderEnabled )
+    {
+        //If shader onset is less than the cap, increase by increment
+        if (shaderOnset < shaderCap )
+        {
+            shaderOnset += shaderIncrement;
+            shader.setParameter("pixel_threshold", shaderOnset);
+        }
+        else    //Else, decrease by increment
+        {
+            shaderOnset -= shaderIncrement;
+            shader.setParameter("pixel_threshold", shaderOnset);
+        }
+    }
+    else
+    {
+        //If shader is disabled, lower until it is 0
+        if ( shaderOnset > 0 )
+        {
+            shaderOnset -= shaderIncrement;
+            shader.setParameter("pixel_threshold", shaderOnset);
+        }
+    }
+    
+    if (slowing)
+    {
+        if (slowspeed < targetslow )
+            slowspeed += Lerp(slowspeed, targetslow, .02);
+        else
+            slowspeed = 0;
+        EntityLibrary::instance()->Slow(slowspeed);
+    }
+    
+    //Update textbox
     textbox.Update( GetView()->getCenter().x - 160,GetView()->getCenter().y - 120, DeltaTime() );
+    //Display textbox
     textbox.Display(GetWindow());
     
+    //Debug info
+    if ( debugging == true )
+    {
+    }
+    
+    //Deltatime is equal to the amount of time since the last frame
     dt = frameTimer.getElapsedTime().asSeconds();
     frameTimer.restart();
+    
+    //Update FPS
+    fps = 1/dt;
+    
 }
 
-void System::Signal(std::string signal)
+float System::Lerp(float num, float target, float ramp)
 {
-    EntityLibrary::instance()->Signal(signal);
+    return (target - num)*ramp;
 }
 
-void System::Message(std::string entity, std::string message)
+void System::ScreenShake( float time, float intensity )
 {
-    EntityLibrary::instance()->Message(entity, message);
+    shakeTimer = time;
+    shakeX = resolution_w/2 + intensity/2;
+    shakeY = resolution_h/2;// + intensity/2;
+    shaking = true;
+}
+
+void System::SlowMo(float multiplyer)
+{
+    slowing = true;
+    targetslow = multiplyer;
+}
+
+void System::SetMusic(std::string file)
+{
+    music.openFromFile(resourcePath()+file);
+}
+
+void System::PlayMusic()
+{
+    music.play();
+}
+
+void System::StopMusic()
+{
+    music.stop();
 }
