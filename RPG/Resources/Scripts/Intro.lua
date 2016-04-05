@@ -29,3 +29,9 @@ display = function(e)
 		graphic:Display(428, 100)
 	end
 end
+
+onKeyPress = function(e,k)
+	e:Message("Music", "Resources/Music/The God Head.wav")
+	e:Message("Music", "Play")
+	e:Message("Map", "Box.json")
+end

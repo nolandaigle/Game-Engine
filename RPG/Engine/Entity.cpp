@@ -188,6 +188,74 @@ void Entity::Input(sf::Event *event)
                 onKeyPress(this,"right");
         }
     }
+    if ( event->type == sf::Event::KeyReleased )
+    {
+        LuaRef onKeyRelease = getGlobal(luaState, "onKeyRelease");
+        if ( onKeyRelease )
+        {
+            if ( event->key.code == sf::Keyboard::A )
+                onKeyRelease(this,"a");
+            if ( event->key.code == sf::Keyboard::B )
+                onKeyRelease(this,"b");
+            if ( event->key.code == sf::Keyboard::C )
+                onKeyRelease(this,"c");
+            if ( event->key.code == sf::Keyboard::D )
+                onKeyRelease(this,"d");
+            if ( event->key.code == sf::Keyboard::E )
+                onKeyRelease(this,"e");
+            if ( event->key.code == sf::Keyboard::F )
+                onKeyRelease(this,"f");
+            if ( event->key.code == sf::Keyboard::G )
+                onKeyRelease(this,"g");
+            if ( event->key.code == sf::Keyboard::H )
+                onKeyRelease(this,"h");
+            if ( event->key.code == sf::Keyboard::I )
+                onKeyRelease(this,"i");
+            if ( event->key.code == sf::Keyboard::J )
+                onKeyRelease(this,"j");
+            if ( event->key.code == sf::Keyboard::K )
+                onKeyRelease(this,"k");
+            if ( event->key.code == sf::Keyboard::L )
+                onKeyRelease(this,"l");
+            if ( event->key.code == sf::Keyboard::M )
+                onKeyRelease(this,"m");
+            if ( event->key.code == sf::Keyboard::N )
+                onKeyRelease(this,"n");
+            if ( event->key.code == sf::Keyboard::O )
+                onKeyRelease(this,"o");
+            if ( event->key.code == sf::Keyboard::P )
+                onKeyRelease(this,"p");
+            if ( event->key.code == sf::Keyboard::Q )
+                onKeyRelease(this,"q");
+            if ( event->key.code == sf::Keyboard::R )
+                onKeyRelease(this,"r");
+            if ( event->key.code == sf::Keyboard::S )
+                onKeyRelease(this,"s");
+            if ( event->key.code == sf::Keyboard::T )
+                onKeyRelease(this,"t");
+            if ( event->key.code == sf::Keyboard::U )
+                onKeyRelease(this,"u");
+            if ( event->key.code == sf::Keyboard::V )
+                onKeyRelease(this,"v");
+            if ( event->key.code == sf::Keyboard::W )
+                onKeyRelease(this,"w");
+            if ( event->key.code == sf::Keyboard::X )
+                onKeyRelease(this,"x");
+            if ( event->key.code == sf::Keyboard::Y )
+                onKeyRelease(this,"y");
+            if ( event->key.code == sf::Keyboard::Z )
+                onKeyRelease(this,"z");
+            if ( event->key.code == sf::Keyboard::Up )
+                onKeyRelease(this,"up");
+            if ( event->key.code == sf::Keyboard::Down )
+                onKeyRelease(this,"down");
+            if ( event->key.code == sf::Keyboard::Left )
+                onKeyRelease(this,"left");
+            if ( event->key.code == sf::Keyboard::Right )
+                onKeyRelease(this,"right");
+        }
+    }
+
 }
 
 void Entity::mInput()
