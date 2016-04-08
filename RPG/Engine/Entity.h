@@ -118,6 +118,7 @@ public:
     void SetScreenColor( int r, int g, int b ) { system->SetScreenColor( r, g, b ); }
     
     int Round( float num ) { return round(num); }
+    float Lerp(float num, float target, float ramp) { return system->Lerp(num, target, ramp); }
 };
 
 #endif /* defined(__RPG__Entity__) */

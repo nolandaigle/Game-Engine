@@ -538,6 +538,7 @@ void Entity::LoadScript(char* filename)
     .addFunction("SetUpdate", &Entity::SetUpdate )
     .addFunction("Sleep", &Entity::Sleep )
     .addFunction("Round", &Entity::Round )
+    .addFunction("Lerp", &Entity::Lerp)
     .endClass();
 }
 
