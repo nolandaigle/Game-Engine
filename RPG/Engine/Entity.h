@@ -12,6 +12,7 @@
 #include <SFML/Graphics.hpp>
 #include "System/System.h"
 #include <map>
+#include <math.h>
 #include <string>
 #include "luabridge/luabridge.h"
 #include "GraphicComponent.h"
@@ -115,6 +116,8 @@ public:
     std::string CreateEntity(int _x, int _y, std::string _name, std::string info);
     void Sleep(float time) { system->SetSleep(time); }
     void SetScreenColor( int r, int g, int b ) { system->SetScreenColor( r, g, b ); }
+    
+    int Round( float num ) { return round(num); }
 };
 
 #endif /* defined(__RPG__Entity__) */
