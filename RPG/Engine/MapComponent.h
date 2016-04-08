@@ -24,6 +24,8 @@ public:
     MapComponent(System *_system);
     ~MapComponent();
     void SetMap(Map *_map);
+    int GetWidth();
+    int GetHeight();
     void Multiply();
     
     int x, y, w, h;
