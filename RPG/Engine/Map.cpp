@@ -15,6 +15,8 @@
 Map::Map(System *_system)
 {
     system = _system;
+    mapHeight = 0;
+    mapWidth = 0;
 }
 
 Map::~Map()
@@ -39,15 +41,12 @@ void Map::Load(std::string _filename )
     in>>mapValue;
     
     //TILES
-    int tile_w;
-    int tile_h;
-    
     std::string tileimage;
     
     for (Json::Value::iterator it = mapValue["tilesets"].begin(); it != mapValue["tilesets"].end(); ++it)
     {
-        tile_w = (*it)["tilewidth"].asInt();
-        tile_h  = (*it)["tileheight"].asInt();
+        tileWidth = (*it)["tilewidth"].asInt();
+        tileHeight  = (*it)["tileheight"].asInt();
         tileimage = (*it)["image"].asString();
     }
     
@@ -57,14 +56,14 @@ void Map::Load(std::string _filename )
         
         int i = 0;
 
-        int w  = (*it)["width"].asInt();
-        int h  = (*it)["height"].asInt();
+        mapWidth  = (*it)["width"].asInt();
+        mapHeight  = (*it)["height"].asInt();
         if ( tileimage == "" )
             tileimage = "CityTileset.png";
         
-        for ( int y = 0; y < h; y++ )
+        for ( int y = 0; y < mapHeight; y++ )
         {
-            for ( int x = 0; x < w; x++ )
+            for ( int x = 0; x < mapWidth; x++ )
             {
                 int type = (*it)["data"][i].asInt();
                 
@@ -75,11 +74,11 @@ void Map::Load(std::string _filename )
                     
                     while ( bx >= 128/16 )
                     {
-                        bx -= tile_w;
+                        bx -= tileWidth;
                         by += 1;
                     }
                     
-                    Entity *e = EntityLibrary::instance()->AddEntity(x*tile_w,y*tile_h, "Tile", false, (*it)["data"][i].asString() );
+                    Entity *e = EntityLibrary::instance()->AddEntity(x*tileWidth,y*tileHeight, "Tile", false, (*it)["data"][i].asString() );
 //                    tiles.push_back(e);
                     e->SetLayer(layer);
                     e->GetGC()->SetImage(tileimage);
