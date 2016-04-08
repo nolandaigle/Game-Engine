@@ -75,20 +75,9 @@ void Entity::Turn()
 void Entity::Display()
 {
     //If the entity is updating, run its lua script
-    if ( Updating() )
-    {
         LuaRef display = getGlobal(luaState, "display");
         if ( display )
-            display(this);
-    }
-    else
-    { //Otherwise just draw the sprite attached to the Graphics Component
-        if ( GetGC() && GetTransform() )
-        {
-            GetGC()->Display(GetTransform()->x, GetTransform()->y);
-        }
-    }
-}
+            display(this);}
 
 void Entity::Collapse()
 {
@@ -433,6 +422,7 @@ void Entity::LoadScript(char* filename)
     .addFunction("SetImage", &GraphicComponent::SetImage)
     .addFunction("SetRotation", &GraphicComponent::SetRotation)
     .addFunction("SetAnimation", &GraphicComponent::SetAnimation)
+    .addFunction("SetColor", &GraphicComponent::SetColor)
     .addFunction("SetFPS", &GraphicComponent::SetFPS)
     .addFunction("SetScale", &GraphicComponent::SetScale )
     .addFunction("SetFrameSize", &GraphicComponent::SetFrameSize )
@@ -491,6 +481,8 @@ void Entity::LoadScript(char* filename)
     .addConstructor<void(*) (System*)>()
     .addFunction("GetEntityName", &Component::GetEntityName)
     .addFunction("SetMap", &MapComponent::SetMap)
+    .addFunction("GetWidth", &MapComponent::GetWidth)
+    .addFunction("GetHeight", &MapComponent::GetHeight)
     .addFunction("Multiply", &MapComponent::Multiply)
     .endClass()
     
@@ -501,6 +493,10 @@ void Entity::LoadScript(char* filename)
     .addFunction("SetPixelate", &ScreenComponent::SetPixelate)
     .addFunction("ScreenShake", &ScreenComponent::ScreenShake)
     .addFunction("SlowMo", &ScreenComponent::SlowMo)
+    .addFunction("Zoom", &ScreenComponent::Zoom)
+    .addFunction("GetWidth", &ScreenComponent::GetWidth)
+    .addFunction("GetHeight", &ScreenComponent::GetHeight)
+    .addFunction("Reset", &ScreenComponent::Reset)
     .endClass()
     
     //    FileComponent
@@ -510,6 +506,7 @@ void Entity::LoadScript(char* filename)
     .addFunction("OpenFile", &FileComponent::OpenFile)
     .addFunction("CloseFile", &FileComponent::CloseFile)
     .addFunction("GetLine", &FileComponent::GetLine)
+    .addFunction("WriteLine", &FileComponent::WriteLine)
     .endClass()
     
     //Entity
@@ -540,6 +537,7 @@ void Entity::LoadScript(char* filename)
     .addFunction("Updating", &Entity::Updating)
     .addFunction("SetUpdate", &Entity::SetUpdate )
     .addFunction("Sleep", &Entity::Sleep )
+    .addFunction("Round", &Entity::Round )
     .endClass();
 }
 
