@@ -49,3 +49,13 @@ void MapComponent::Multiply()
         }
     }
 }
+
+int MapComponent::GetWidth()
+{
+    return map->GetWidth()*map->GetTileWidth();
+}
+
+int MapComponent::GetHeight()
+{
+    return map->GetHeight()*map->GetTileHeight();
+}
