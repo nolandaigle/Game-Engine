@@ -170,7 +170,7 @@ void System::Display()
     }
     
     //Update textbox
-    textbox.Update( GetView()->getCenter().x - 480,GetView()->getCenter().y - 240, DeltaTime() );
+    textbox.Update( GetView()->getCenter().x - GetView()->getSize().x/2,GetView()->getCenter().y - GetView()->getSize().y/2, DeltaTime() );
     //Display textbox
     textbox.Display(GetWindow());
     
@@ -186,11 +186,16 @@ void System::Display()
     //Update FPS
     fps = 1/dt;
     
+    std::cout<<"FPS: "<<fps;
+    
 }
 
 float System::Lerp(float num, float target, float ramp)
 {
-    return (target - num)*ramp;
+    if (target != num )
+        return (target - num)*ramp;
+    else
+        return 0;
 }
 
 void System::ScreenShake( float time, float intensity )

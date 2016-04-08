@@ -171,6 +171,11 @@ void Textbox::SetVoice(std::string file)
     voice->Load("Resources/Sound/"+file);
 }
 
+void Textbox::SetSize(int w, int h)
+{
+    
+}
+
 void Textbox::Open()
 {
     showing = true;

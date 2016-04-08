@@ -45,6 +45,7 @@ public:
     void Open();
     void Close();
     void Clear();
+    void SetSize( int w, int h );
     void PushMessage(std::string message);
     void SetVoice(std::string file);
     
