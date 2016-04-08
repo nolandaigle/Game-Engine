@@ -15,7 +15,6 @@ class Graphic
 {
 private:
     sf::Texture *txt;
-    sf::Sprite sprite;
     std::string file;
     bool looping;
     int frameWidth;
@@ -23,6 +22,10 @@ private:
     bool animated;
     sf::Clock fpsTimer;
     float fps;
+    
+    sf::VertexArray quad;
+    
+    float scaleX, scaleY;
     
     std::map<std::string, std::vector<sf::Vector2f>> animation;
     std::vector<sf::Vector2f>::iterator frameIt;
@@ -32,13 +35,15 @@ public:
     ~Graphic();
     void Load(std::string _file);
     void Update();
-    sf::Sprite *GetSprite() { return &sprite; }
-    void SetPosition( int x, int y) { sprite.setPosition(x, y); }
+    sf::VertexArray *GetSprite() { return &quad; }
+    sf::Texture *GetTexture() { return txt; }
+    void SetPosition( int x, int y);
     void SetBox( int x, int y, int w, int h );
-    void SetScale(float x, float y );
+    void SetScale(int x, int y );
     void SetFrameSize( int _w, int _h );
     void SetRotation(int rot );
-    void SetColor( int r, int g, int b, int t = 255 ) { sprite.setColor( sf::Color( r, g, b, t )); }
+    void SetColor( int r, int g, int b, int t = 255 );
+    void SetTransparency(int t);
     void SetAnimation( std::string anim );
     void SetFPS( int _fps );
     void Animate();

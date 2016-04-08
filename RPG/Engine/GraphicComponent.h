@@ -16,11 +16,12 @@
 class GraphicComponent: public Component
 {
 private:
+    sf::RenderStates state;
     Graphic graphic;
     bool showing;
     bool bypassCulling;
     bool expanding;
-    float scale;
+    int scale;
     float transparency;
     float targetTran;
 protected:
@@ -28,9 +29,14 @@ public:
     GraphicComponent(System *_system);
     ~GraphicComponent();
     
+    
+    sf::RenderStates *GetRenderState() { return &state; }
+    bool shader;
+    
     void Display(int x, int y);
     void SetImage(std::string _file);
-    void SetScale(float x, float y );
+    void SetColor( int r, int g, int b );
+    void SetScale(int x, int y );
     void SetFrameSize( int w, int h );
     void SetRotation(int rot );
     void AddFrame(std::string anim, int x, int y);

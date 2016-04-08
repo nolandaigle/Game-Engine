@@ -21,6 +21,11 @@ GraphicComponent::GraphicComponent(System *_system) : Component(_system)
     
     transparency = 255;
     targetTran = transparency;
+    
+    shader = true;
+    
+    state.shader = NULL;
+    state.texture = NULL;
 }
 
 GraphicComponent::~GraphicComponent()
@@ -57,14 +62,28 @@ void GraphicComponent::Display(int x, int y)
     
     if  ( showing )
     {
-        graphic.SetColor( 255, 255, 255, transparency );
-        system->GetWindow()->draw(*graphic.GetSprite(), system->GetShader());
+        graphic.SetTransparency( transparency );
+        if (system->GetShader())
+        {
+            state.shader = NULL;
+            system->GetWindow()->draw(*graphic.GetSprite(), state);
+        }
+        else
+            state.shader = NULL;
+            system->GetWindow()->draw(*graphic.GetSprite(), state);
     }
+}
+
+void GraphicComponent::SetColor(int r, int g, int b)
+{
+    graphic.SetColor(r, g, b);
 }
 
 void GraphicComponent::SetImage(std::string _file)
 {
     graphic.Load("Resources/Graphic/"+_file);
+    state.texture = graphic.GetTexture();
+    state.shader = system->GetShader();
 }
 
 void GraphicComponent::AddFrame(std::string anim, int x, int y)
@@ -87,7 +106,7 @@ void GraphicComponent::SetFrameSize(int w, int h)
     graphic.SetFrameSize(w,h);
 }
 
-void GraphicComponent::SetScale(float x, float y)
+void GraphicComponent::SetScale(int x, int y)
 {
     graphic.SetScale(x,y);
 }
