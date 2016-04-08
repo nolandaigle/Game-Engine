@@ -23,13 +23,13 @@ Textbox::Textbox()
     
     fade = 0;
     
-    cinematic[0] = sf::RectangleShape(sf::Vector2f(320,40));
+    cinematic[0] = sf::RectangleShape(sf::Vector2f(960,480));
     cinematic[0].setFillColor(sf::Color::Black);
-    cinematic[1] = sf::RectangleShape(sf::Vector2f(320,40));
+    cinematic[1] = sf::RectangleShape(sf::Vector2f(960,480));
     cinematic[1].setFillColor(sf::Color::Black);
-    cinematic[2] = sf::RectangleShape(sf::Vector2f(320,240));
+    cinematic[2] = sf::RectangleShape(sf::Vector2f(960,540));
     cinematic[2].setFillColor(sf::Color( 255, 255, 255, fade ));
-    if ( !font.loadFromFile(resourcePath()+"/Resources/Fonts/lunchds.ttf"))
+    if ( !font.loadFromFile(resourcePath()+"/Resources/Fonts/hellovetica.ttf"))
     {
     }
     
@@ -59,7 +59,7 @@ void Textbox::Update(int screenx, int screeny, float dt)
             fade += 2;
         if ( y[0] < 0 )
             y[0] += 1;
-        if ( y[1] > 200 )
+        if ( y[1] > 480 )
             y[1] -= 1;
         
         //BLACK BORDER
@@ -70,7 +70,7 @@ void Textbox::Update(int screenx, int screeny, float dt)
         
         //FACE
         graphic->SetPosition(screenx+40, screeny+75);
-        graphic->GetSprite()->setColor(sf::Color( 255, 255, 255, fade ) );
+        //graphic->GetSprite()->setColor(sf::Color( 255, 255, 255, fade ) );
         graphic->Update();
         
         //TEXT
@@ -110,7 +110,7 @@ void Textbox::Update(int screenx, int screeny, float dt)
         {
             fade -= 2;
             cinematic[2].setFillColor(sf::Color( 0, 0, 0, fade ));
-            graphic->GetSprite()->setColor(sf::Color( 255, 255, 255, fade ) );
+            //graphic->GetSprite()->setColor(sf::Color( 255, 255, 255, fade ) );
         }
         if ( y[0] > -41 )
             y[0] -= 1;
@@ -155,7 +155,7 @@ void Textbox::SetGraphic(std::string file )
         graphic = new Graphic;
         graphic->Load(file);
         graphic->SetBox(0, 0, 32, 32);
-        graphic->GetSprite()->setScale(3, 3);
+        //graphic->GetSprite()->setScale(3, 3);
         
         graphic->AddFrame("Talk", sf::Vector2f(0,0));
         graphic->AddFrame("Talk", sf::Vector2f(1,0));
