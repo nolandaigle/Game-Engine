@@ -20,7 +20,10 @@ public:
     void SetPixelate( bool enabled, float cap, float increment );
     void ScreenShake( float time, float intensity );
     void SlowMo( float multiplyer );
-    
+    void Zoom( float zoom );
+    void Reset();
+    float GetWidth();
+    float GetHeight();
 };
 
 #endif /* defined(__Game__ScreenComponent__) */
