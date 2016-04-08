@@ -1,7 +1,7 @@
 
 RPG/cute_image.jpg
 
-RPG/Resources/cute_image.jpg
+RPG/Resources/
 
 *.jpg
 
@@ -12,3 +12,45 @@ RPG/cute_image.jpg
 RPG/Resources/Sound/uh.wav
 
 RPG/Resources/icon.png
+
+*.wav
+
+*.ttf
+
+*.png
+
+*.ttf
+
+*.png
+
+*.json
+
+*.json
+
+*.glsl
+
+*.frag
+
+*.vertex
+
+*.tmx
+
+*.lua
+
+RPG/Resources/Scripts/Tile.lua
+
+*.lua
+
+RPG/Resources/Maps/Box.json
+
+*.ttf
+
+RPG/Resources/Fonts/hellovetica.ttf
+
+RPG/Resources/Fonts/hellovetica.ttf
+
+RPG/Resources/Fonts/hellovetica.ttf
+
+*.ttf
+
+*.vertex
