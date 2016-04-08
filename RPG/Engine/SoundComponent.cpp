@@ -16,30 +16,36 @@ SoundComponent::SoundComponent(System *_system) : Component(_system)
 
 SoundComponent::~SoundComponent()
 {
-    sound.Stop();
+    for (std::map<std::string, Sound*>::iterator it = sound.begin() ; it != sound.end(); ++it)
+    {
+        delete it->second;
+        it->second = NULL;
+    }
+    sound.clear();
 }
 
-void SoundComponent::Play()
+void SoundComponent::Play(std::string name)
 {
-    sound.Play();
+    sound[name]->Play();
 }
 
-void SoundComponent::Stop()
+void SoundComponent::Stop(std::string name)
 {
-    sound.Stop();
+    sound[name]->Stop();
 }
 
-void SoundComponent::Load(std::string file)
+void SoundComponent::Load(std::string file, std::string name)
 {
-    sound.Load(file);
+    sound[name] = new Sound();
+    sound[name]->Load(file);
 }
 
-void SoundComponent::SetVolume(int vol)
+void SoundComponent::SetVolume(std::string name, int vol)
 {
-    sound.SetVolume(vol);
+    sound[name]->SetVolume(vol);
 }
 
-void SoundComponent::SetLoop(bool loop)
+void SoundComponent::SetLoop(std::string name, bool loop)
 {
-    sound.SetLoop(loop);
+    sound[name]->SetLoop(loop);
 }

@@ -10,23 +10,24 @@
 #define __RPG__SoundComponent__
 
 #include <string>
+#include <map>
 #include "Component.h"
 #include "Sound.h"
 
 class SoundComponent: public Component
 {
 private:
-    Sound sound;
+    std::map<std::string, Sound*> sound;
 protected:
 public:
     SoundComponent(System *_system);
     ~SoundComponent();
     
-    void Load(std::string file);
-    void Play();
-    void Stop();
-    void SetVolume(int vol);
-    void SetLoop(bool loop);
+    void Load(std::string file, std::string name);
+    void Play(std::string name);
+    void Stop(std::string name);
+    void SetVolume(std::string name, int vol);
+    void SetLoop(std::string name, bool loop);
 };
 
 #endif /* defined(__RPG__SoundComponent__) */
