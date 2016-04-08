@@ -13,7 +13,7 @@
 bool System::Load()
 {
     //Create new SF::Render window at 3x scale
-    window = new sf::RenderWindow( sf::VideoMode(resolution_w*2, resolution_h*2), "*_*" );
+    window = new sf::RenderWindow( sf::VideoMode(resolution_w, resolution_h), "*_*" );
     //Create new SF::View with the size of the game's resolution
     view = new sf::View(sf::FloatRect(0, 0, resolution_w, resolution_h));
     //Tell window to draw the view
@@ -22,6 +22,7 @@ bool System::Load()
     window->setFramerateLimit(60);
     //Set KeyRepeat to false
     window->setKeyRepeatEnabled(false);
+    window->setVerticalSyncEnabled(true);
     
     //Load shader from file and set parameters
     if (!shader.loadFromFile(resourcePath()+"Resources/Shaders/pixelate.frag", sf::Shader::Fragment))
@@ -155,6 +156,8 @@ void System::Display()
             shaderOnset -= shaderIncrement;
             shader.setParameter("pixel_threshold", shaderOnset);
         }
+        else
+            shaderOnset = 0;
     }
     
     if (slowing)
@@ -167,7 +170,7 @@ void System::Display()
     }
     
     //Update textbox
-    textbox.Update( GetView()->getCenter().x - 160,GetView()->getCenter().y - 120, DeltaTime() );
+    textbox.Update( GetView()->getCenter().x - 480,GetView()->getCenter().y - 240, DeltaTime() );
     //Display textbox
     textbox.Display(GetWindow());
     
