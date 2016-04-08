@@ -48,11 +48,11 @@ void ScreenComponent::Reset()
 
 float ScreenComponent::GetWidth()
 {
-    return system->GetView()->getSize().x*system->resolution_w;
+    return system->GetView()->getSize().x;
 }
 
 float ScreenComponent::GetHeight()
 {
-    return system->GetView()->getSize().y*system->resolution_h;
+    return system->GetView()->getSize().y;
 
 }
