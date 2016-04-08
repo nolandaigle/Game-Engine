@@ -57,7 +57,7 @@ void Game_Scene::Turn()
         }
     }
     
-    std::cout<<"FPS: "<<system->GetFPS()<<std::endl;
+  //  std::cout<<"FPS: "<<system->GetFPS()<<std::endl;
 }
 
 void Game_Scene::Display()

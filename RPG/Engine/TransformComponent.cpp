@@ -7,6 +7,7 @@
 //
 
 #include "TransformComponent.h"
+#include <cmath>
 
 TransformComponent::TransformComponent(System *_system) : Component(_system)
 {
@@ -35,7 +36,7 @@ TransformComponent::~TransformComponent()
 
 void TransformComponent::CenterView()
 {
-    system->GetView()->setCenter(x, y);
+    system->GetView()->setCenter(std::floor(x), std::floor(y));
 }
 
 void TransformComponent::SetSize( int _w, int _h )
