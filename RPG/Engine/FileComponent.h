@@ -24,6 +24,7 @@ public:
     void OpenFile(std::string f);
     void CloseFile();
     std::string GetLine();
+    void WriteLine(std::string line);
 };
 
 #endif /* defined(__Game__FileComponent__) */

@@ -33,3 +33,8 @@ std::string FileComponent::GetLine()
     file>>temp;
     return temp;
 }
+
+void FileComponent::WriteLine(std::string line)
+{
+    file<<line;
+}
