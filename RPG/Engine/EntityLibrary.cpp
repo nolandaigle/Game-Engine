@@ -171,8 +171,7 @@ void EntityLibrary::Signal(std::string signal)
 {
     for (std::map<std::string, Entity*>::iterator it = entities.begin() ; it != entities.end(); ++it)
     {
-        if ( it->second->Updating() )
-            it->second->RecieveSignal(signal);
+        it->second->RecieveSignal(signal);
     }
 }
 
