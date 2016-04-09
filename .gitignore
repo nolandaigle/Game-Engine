@@ -5,8 +5,6 @@ RPG/cute_image.jpg
 
 *.jpg
 
-*.jpg
-
 RPG/cute_image.jpg
 
 RPG/Resources/Sound/
@@ -34,8 +32,6 @@ RPG/Resources/icon.png
 *.vertex
 
 *.tmx
-
-RPG/Resources/Maps/
 
 *.ttf
 
