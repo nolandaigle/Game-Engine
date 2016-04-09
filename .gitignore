@@ -3,15 +3,13 @@ RPF/Engine/LuaBridge/
 
 RPG/cute_image.jpg
 
-RPG/Resources/
-
 *.jpg
 
 *.jpg
 
 RPG/cute_image.jpg
 
-RPG/Resources/Sound/uh.wav
+RPG/Resources/Sound/
 
 RPG/Resources/icon.png
 
@@ -37,21 +35,11 @@ RPG/Resources/icon.png
 
 *.tmx
 
-*.lua
-
-RPG/Resources/Scripts/Tile.lua
-
-*.lua
-
-RPG/Resources/Maps/Box.json
+RPG/Resources/Maps/
 
 *.ttf
 
-RPG/Resources/Fonts/hellovetica.ttf
-
-RPG/Resources/Fonts/hellovetica.ttf
-
-RPG/Resources/Fonts/hellovetica.ttf
+RPG/Resources/Fonts/
 
 *.ttf
 
