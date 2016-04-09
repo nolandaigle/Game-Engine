@@ -56,8 +56,6 @@ void Game_Scene::Turn()
             eL->SetMap(map);
         }
     }
-    
-  //  std::cout<<"FPS: "<<system->GetFPS()<<std::endl;
 }
 
 void Game_Scene::Display()

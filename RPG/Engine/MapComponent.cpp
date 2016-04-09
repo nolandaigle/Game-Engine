@@ -52,10 +52,16 @@ void MapComponent::Multiply()
 
 int MapComponent::GetWidth()
 {
-    return map->GetWidth()*map->GetTileWidth();
+    if ( map )
+        return map->GetWidth()*map->GetTileWidth();
+    else
+        return -1;
 }
 
 int MapComponent::GetHeight()
 {
-    return map->GetHeight()*map->GetTileHeight();
+    if (map)
+        return map->GetHeight()*map->GetTileHeight();
+    else
+        return -1;
 }

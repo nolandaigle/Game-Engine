@@ -59,6 +59,8 @@ System::System()
     
     //Screenshake stuff
     shaking = false;
+    screenX = 0;
+    screenY = 0;
     shakeX = 10;
     shakeY = 10;
     shakeTimer = 0;
@@ -123,8 +125,8 @@ void System::Display()
         }
         else if ( x - resolution_w/2 < 2 || x - resolution_w/2 > -2 )
         {
-            x += Lerp( x, resolution_w/2, .1 );
-            y += Lerp( y, resolution_h/2, .1 );
+            x += Lerp( x, screenX, .1 );
+            y += Lerp( y, screenY, .1 );
         }
         else
         {
@@ -186,8 +188,6 @@ void System::Display()
     //Update FPS
     fps = 1/dt;
     
-    std::cout<<"FPS: "<<fps;
-    
 }
 
 float System::Lerp(float num, float target, float ramp)
@@ -201,8 +201,10 @@ float System::Lerp(float num, float target, float ramp)
 void System::ScreenShake( float time, float intensity )
 {
     shakeTimer = time;
-    shakeX = resolution_w/2 + intensity/2;
-    shakeY = resolution_h/2;// + intensity/2;
+    screenX = GetView()->getCenter().x;
+    screenY = GetView()->getCenter().y;
+    shakeX = GetView()->getCenter().x + intensity/2;
+    shakeY = GetView()->getCenter().y;// + intensity/2;
     shaking = true;
 }
 

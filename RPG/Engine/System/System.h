@@ -53,6 +53,7 @@ private:
     bool shaderEnabled;
     
     //Screenshake stuff
+    int screenX, screenY;
     float shakeX, shakeY;
     float xvel, yvel;
     float shakeTimer;

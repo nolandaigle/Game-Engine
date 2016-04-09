@@ -51,13 +51,14 @@ void Map::Load(std::string _filename )
     }
     
     int layer = 0;
+    
+    mapWidth  = mapValue["width"].asInt();
+    mapHeight  = mapValue["height"].asInt();
+    
     for (Json::Value::iterator it = mapValue["layers"].begin(); it != mapValue["layers"].end(); ++it)
     {
         
         int i = 0;
-
-        mapWidth  = (*it)["width"].asInt();
-        mapHeight  = (*it)["height"].asInt();
         if ( tileimage == "" )
             tileimage = "CityTileset.png";
         
