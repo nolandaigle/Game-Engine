@@ -23,7 +23,7 @@ public:
     void CenterView();
     void SetSize( int w, int h );
     
-    int x, y, w, h;
+    float x, y, w, h;
     sf::Vector2f hCPoint[4];
     sf::Vector2f vCPoint[4];
 };

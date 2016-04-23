@@ -36,7 +36,7 @@ TransformComponent::~TransformComponent()
 
 void TransformComponent::CenterView()
 {
-    system->GetView()->setCenter(std::floor(x), std::floor(y));
+    system->GetView()->setCenter((x), (y));
 }
 
 void TransformComponent::SetSize( int _w, int _h )
