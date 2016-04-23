@@ -41,8 +41,7 @@ Entity *EntityLibrary::AddEntity(int x, int y, std::string name, bool updating, 
             entities[oss.str()] = new Entity(x, y, system, updating);
             entities[oss.str()]->SetType(type);
             entities[oss.str()]->SetName(oss.str());
-            //Initialize the entity
-            entities[oss.str()]->Bang(info);
+            entities[oss.str()]->BangInfo = info;
             //Return a pointer to the newly created entity
             return entities[oss.str()];
         }
@@ -52,8 +51,7 @@ Entity *EntityLibrary::AddEntity(int x, int y, std::string name, bool updating, 
             entities[name] = new Entity(x, y, system, updating);
             entities[name]->SetName(name);
             entities[name]->SetType(name);
-            //Initialize the entity
-            entities[name]->Bang(info);
+            entities[name]->BangInfo = info;
             //Return a pointer to the newly created entity
             return entities[name];
         }
@@ -64,7 +62,7 @@ Entity *EntityLibrary::AddEntity(int x, int y, std::string name, bool updating, 
 EntityLibrary::EntityLibrary()
 {
     fpsTimer = 0;
-    fps = .016;
+    fps = 0;
 }
 
 void EntityLibrary::SetMap(Map *map)
@@ -107,9 +105,14 @@ void EntityLibrary::Turn()
                 it->second->Turn();
             }
         }
+        for (std::map<std::string, Entity*>::iterator it = entities.begin() ; it != entities.end(); ++it)
+        {
+            if (it->second->Updating())
+            {
+                it->second->LateTurn();
+            }
+        }
     }
-    
-    std::cout<<"Entities: "<<entities.size()<<std::endl;
 }
 
 void EntityLibrary::Display()
@@ -211,8 +214,6 @@ void EntityLibrary::Sort(std::string sortby)
             cList.push_back(it->second->GetCC());
         }
     }
-    
-    std::cout<<"Colliders: "<<cList.size()<<std::endl;
 }
 
 bool EntityLibrary::OnScreen(TransformComponent *t)

@@ -16,25 +16,33 @@ FileComponent::~FileComponent()
 {
 }
 
-void FileComponent::OpenFile(std::string f)
+void FileComponent::OpenFile(std::string fi)
 {
-    filename = f;
-    file.open(f);
+    filename = fi;
+    file.clear();
+    std::ifstream ifstr(filename);
+    ifstr>>file;
+    ifstr.close();
+    
 }
 
-void FileComponent::CloseFile()
+std::string FileComponent::GetVariable(std::string variable)
 {
-    file.close();
+    std::ifstream ifstr(filename);
+    ifstr>>file;
+    ifstr.close();
+    return file[variable].asString();
 }
 
-std::string FileComponent::GetLine()
+void FileComponent::SetVariable(std::string variable, std::string value)
 {
-    std::string temp;
-    file>>temp;
-    return temp;
+    file[variable] = value;
 }
 
-void FileComponent::WriteLine(std::string line)
+void FileComponent::WriteFile()
 {
-    file<<line;
+    Json::StyledWriter styledWriter;
+    std::ofstream ofstr(filename);
+    ofstr<<styledWriter.write(file);
+    ofstr.close();
 }
