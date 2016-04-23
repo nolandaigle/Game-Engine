@@ -30,6 +30,7 @@ public:
     void SetGraphic(std::string graphic);
     void ShowGraphic(bool show) { system->GetTextbox()->ShowGraphic(show); }
     void SetVoice(std::string voice);
+    void Clear();
 };
 
 #endif /* defined(__RPG__DialogComponent__) */

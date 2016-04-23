@@ -65,3 +65,10 @@ void DialogComponent::SetVoice(std::string _voice)
 {
     voice = _voice;
 }
+
+void DialogComponent::Clear()
+{
+    system->GetTextbox()->Clear();
+    currentMessage = 0;
+    messages.clear();
+}
