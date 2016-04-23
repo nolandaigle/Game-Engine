@@ -38,6 +38,7 @@ Entity::Entity(int _x, int _y, System *_system, bool _updating )
     transform = NULL;
     luaState = NULL;
     layer = 0;
+    BangInfo = "";
     
     x = _x;
     y = _y;
@@ -51,6 +52,8 @@ Entity::~Entity()
 
 void Entity::Bang(std::string info )
 {
+    if ( BangInfo != "" )
+        info = BangInfo;
     //Gets the filepath this to entity's corresponding script, by type.
     GetPath();
     //Loads that script
@@ -72,12 +75,28 @@ void Entity::Turn()
         update(this);
 }
 
+void Entity::LateTurn()
+{
+    //Runs the Update function in the entity's lua script
+    LuaRef lateUpdate = getGlobal(luaState, "lateUpdate");
+    if ( lateUpdate )
+        lateUpdate(this);
+}
+
 void Entity::Display()
 {
     //If the entity is updating, run its lua script
+    if (Updating())
+    {
         LuaRef display = getGlobal(luaState, "display");
         if ( display )
-            display(this);}
+            display(this);
+    }
+    else if (GetGC() != NULL && GetTransform() != NULL )
+    {
+        GetGC()->Display( GetTransform()->x, GetTransform()->y);
+    }
+}
 
 void Entity::Collapse()
 {
@@ -471,6 +490,7 @@ void Entity::LoadScript(char* filename)
     .addFunction("PushMessage", &DialogComponent::PushMessage)
     .addFunction("OpenDialogue", &DialogComponent::OpenDialogue)
     .addFunction("HideBox", &DialogComponent::HideBox)
+    .addFunction("Clear", &DialogComponent::Clear)
     .addFunction("SetGraphic", &DialogComponent::SetGraphic)
     .addFunction("SetVoice", &DialogComponent::SetVoice)
     .addFunction("ShowGraphic", &DialogComponent::ShowGraphic)
@@ -504,9 +524,9 @@ void Entity::LoadScript(char* filename)
     .addConstructor<void(*) (System*)>()
     .addFunction("GetEntityName", &Component::GetEntityName)
     .addFunction("OpenFile", &FileComponent::OpenFile)
-    .addFunction("CloseFile", &FileComponent::CloseFile)
-    .addFunction("GetLine", &FileComponent::GetLine)
-    .addFunction("WriteLine", &FileComponent::WriteLine)
+    .addFunction("GetVariable", &FileComponent::GetVariable)
+    .addFunction("SetVariable", &FileComponent::SetVariable)
+    .addFunction("WriteFile", &FileComponent::WriteFile)
     .endClass()
     
     //Entity
@@ -539,6 +559,9 @@ void Entity::LoadScript(char* filename)
     .addFunction("Sleep", &Entity::Sleep )
     .addFunction("Round", &Entity::Round )
     .addFunction("Lerp", &Entity::Lerp)
+    
+    .addData("x", &Entity::x)
+    .addData("y", &Entity::y)
     .endClass();
 }
 
@@ -702,6 +725,7 @@ std::string Entity::CreateEntity( int _x, int _y, std::string _name, std::string
 {
     Entity *e;
     e = EntityLibrary::instance()->AddEntity(_x, _y, _name, true, info);
+    e->Bang(info);
     EntityLibrary::instance()->Sort("Layer");
     return e->GetName();
 }

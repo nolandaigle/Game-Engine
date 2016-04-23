@@ -65,6 +65,7 @@ public:
     //Usual structure functions
     virtual void Bang(std::string info = "");
     virtual void Turn();
+    virtual void LateTurn();
     virtual void Display();
     virtual void Collapse();
     
@@ -119,6 +120,8 @@ public:
     
     int Round( float num ) { return round(num); }
     float Lerp(float num, float target, float ramp) { return system->Lerp(num, target, ramp); }
+    
+    std::string BangInfo;
 };
 
 #endif /* defined(__RPG__Entity__) */
