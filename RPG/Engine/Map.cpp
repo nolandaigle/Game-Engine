@@ -17,6 +17,8 @@ Map::Map(System *_system)
     system = _system;
     mapHeight = 0;
     mapWidth = 0;
+    tileWidth = 16;
+    tileHeight = 16;
 }
 
 Map::~Map()
@@ -82,15 +84,6 @@ void Map::Load(std::string _filename )
                     Entity *e = EntityLibrary::instance()->AddEntity(x*tileWidth,y*tileHeight, "Tile", false, (*it)["data"][i].asString() );
 //                    tiles.push_back(e);
                     e->SetLayer(layer);
-                    e->GetGC()->SetImage(tileimage);
-                    
-                    if ( layer == 1 )
-                    {
-                        e->AddComponent("CollisionComponent");
-                        e->GetCC()->SetTransform(e->GetTransform());
-                        e->GetCC()->SetType("Block");
-                    }
-                    
                     
                 }
                 i++;
