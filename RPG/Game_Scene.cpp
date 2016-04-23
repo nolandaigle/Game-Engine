@@ -13,12 +13,16 @@ Game_Scene::Game_Scene(System *_system) : Scene(_system)
 {
     map = new Map(system);
     eL->SetSystem(system);
+    
+    overlay = sf::RectangleShape(sf::Vector2f(system->GetWindow()->getSize().x,system->GetWindow()->getSize().y));
+    fade = 255;
 }
 
 void Game_Scene::Bang()
 {
     //Load MAP
     map->Load(resourcePath()+"Resources/Maps/Intro.json");
+    eL->Bang();
     //Sort entities by layer
     eL->Sort("Layer");
     //Give the entity library a pointer to the loaded map
@@ -65,6 +69,13 @@ void Game_Scene::Display()
     
     //Run System's Display functions
     system->Display();
+    
+    if (fade > 0 )
+    {
+        fade = fade - 15;
+        overlay.setFillColor(sf::Color(0, 0, 0, fade));
+        system->GetWindow()->draw(overlay);
+    }
 }
 
 void Game_Scene::Collapse()
@@ -84,6 +95,11 @@ void Game_Scene::ChangeMap(std::string file)
 {
     eL->SetNextMap("");
     eL->Clear();
+    delete map;
+    map = NULL;
+    map = new Map(system);
     map->Load(resourcePath()+file);
+    eL->Bang();
     eL->Sort("Layer");
+    fade = 255;
 }

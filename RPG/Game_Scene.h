@@ -17,7 +17,9 @@ class Game_Scene: public Scene
 {
 private:
     Map *map;
+    sf::RectangleShape overlay;
     float fps;
+    int fade;
 public:
     Game_Scene(System *_system);
     virtual void Bang();
