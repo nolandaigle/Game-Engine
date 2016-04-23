@@ -99,7 +99,7 @@ void Textbox::Update(int screenx, int screeny, float dt)
         for (std::vector<sf::Text>::iterator it = line.begin() ; it != line.end(); ++it)
         {
             it->setColor( sf::Color( 255, 255, 255, fade ) );
-            it->setPosition(screenx+150, screeny+50+ty);
+            it->setPosition(screenx+5, screeny+5+ty);
             ty += 10;
         }
         
