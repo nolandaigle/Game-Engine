@@ -13,7 +13,7 @@
 bool System::Load()
 {
     //Create new SF::Render window at 3x scale
-    window = new sf::RenderWindow( sf::VideoMode(resolution_w, resolution_h), "*_*" );
+    window = new sf::RenderWindow( sf::VideoMode(resolution_w, resolution_h), "*_*", sf::Style::Fullscreen );
     //Create new SF::View with the size of the game's resolution
     view = new sf::View(sf::FloatRect(0, 0, resolution_w, resolution_h));
     //Tell window to draw the view
@@ -153,7 +153,7 @@ void System::Display()
     else
     {
         //If shader is disabled, lower until it is 0
-        if ( shaderOnset > 0 )
+        if ( shaderOnset > .01 )
         {
             shaderOnset -= shaderIncrement;
             shader.setParameter("pixel_threshold", shaderOnset);
@@ -188,6 +188,14 @@ void System::Display()
     //Update FPS
     fps = 1/dt;
     
+}
+
+bool System::ShaderEnabled()
+{
+    if(shaderOnset <= 0 )
+        return false;
+    else
+        return true;
 }
 
 float System::Lerp(float num, float target, float ramp)
