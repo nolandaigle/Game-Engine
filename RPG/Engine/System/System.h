@@ -73,6 +73,7 @@ public:
     sf::Event *GetEvent() { return &event; }
     sf::View *GetView() { return view; }
     sf::Shader *GetShader() { return &shader; }
+    bool ShaderEnabled();
     float GetFPS() { return fps; }
     void SetSize(int size)
     {
