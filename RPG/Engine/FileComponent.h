@@ -11,20 +11,22 @@
 
 #include "Component.h"
 #include <fstream>
+#include "json/json.h"
 
 class FileComponent: public Component
 {
 private:
     std::string filename;
-    std::fstream file;
+    Json::Value file;
+    
 protected:
 public:
     FileComponent(System *_system);
     ~FileComponent();
-    void OpenFile(std::string f);
-    void CloseFile();
-    std::string GetLine();
-    void WriteLine(std::string line);
+    void OpenFile(std::string fi);
+    std::string GetVariable(std::string variable);
+    void SetVariable(std::string variable, std::string value);
+    void WriteFile();
 };
 
 #endif /* defined(__Game__FileComponent__) */

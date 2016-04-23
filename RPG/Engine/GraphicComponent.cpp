@@ -63,9 +63,8 @@ void GraphicComponent::Display(int x, int y)
     if  ( showing )
     {
         graphic.SetTransparency( transparency );
-        if (system->GetShader())
+        if (system->ShaderEnabled() )
         {
-            state.shader = NULL;
             system->GetWindow()->draw(*graphic.GetSprite(), state);
         }
         else
