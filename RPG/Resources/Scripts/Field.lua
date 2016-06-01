@@ -14,9 +14,8 @@ bang = function(e)
 
 	e:AddComponent("FileComponent")
 	file = e:GetFC()
-	file:OpenFile("playerexit.save")
-	enterSide = file:GetLine()
-	file:CloseFile()
+	file:OpenFile("Game.save")
+	enterSide = file:GetVariable("Player-exit")
 
 	if enterSide == "Right" then
 		e:CreateEntity( 0, 200, "Player", "" )
@@ -47,11 +46,12 @@ update = function(e)
 	end
 	
 	if player:GetTransform().x < 0 then
+		file:OpenFile("Game.save")
+		file:SetVariable("Player-exit", "Field")
+		file:SetVariable("Player-x", e:GetEntity("Player"):GetTransform().x)
+		file:SetVariable("Player-y", 150)
+		file:WriteFile()
 		e:Message("Map", "LeftInfinity.json")
-		file = io.open("playerexit.save", "w")
-		file:write("Field\n")
-		file:write("150")
-		file:close()
 	elseif player:GetTransform().x > map:GetWidth() then
 		player:GetTransform().x = 0
 	end

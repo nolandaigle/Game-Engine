@@ -95,6 +95,11 @@ void GraphicComponent::Play(std::string anim)
     graphic.Play(anim, true);
 }
 
+void GraphicComponent::PlayLoop(std::string anim, bool loop)
+{
+    graphic.Play(anim, loop);
+}
+
 void GraphicComponent::Stop()
 {
     graphic.Stop();

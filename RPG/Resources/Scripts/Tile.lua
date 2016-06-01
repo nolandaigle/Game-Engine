@@ -1,13 +1,13 @@
-color = "white"
+color = "White"
 
 bang = function(e, i)
 	e:AddComponent("GraphicComponent")
-	gComp = e:GetGC()
 	e:AddComponent("TransformComponent")
 	transform = e:GetTransform()
 
 	graphic = e:GetGC()
 	graphic:SetImage("Tilesheet.png")
+
 
 	width = 128/16
 
@@ -24,29 +24,42 @@ bang = function(e, i)
 		graphic:Play("Tile")
 	end
 
+
+	e:AddComponent("FileComponent")
+	file = e:GetFC()
+	file:OpenFile("Game.save")
+	color = file:GetVariable("Color")
+	if color == "White" then
+		graphic:SetColor(255,255,255)
+	elseif color == "Blue" then
+		graphic:SetColor(50,50,255)
+	end
+
 	if e:GetLayer() == 1 then
 		e:AddComponent("CollisionComponent")
 		collider = e:GetCC()
 		collider:SetTransform(e:GetTransform())
 		collider:SetType("Block")
 	end
+
+	print(color)
 end
 
 display = function(e)
-	if gComp then
-		if color == "blue" then
-			graphic:SetColor(50,50,255)
-		elseif color == "white" then
-			graphic:SetColor(255,255,255)
-		end
-        gComp:Display(e:GetTransform().x,e:GetTransform().y)
+	if graphic then
+        graphic:Display(e:GetTransform().x,e:GetTransform().y)
 	end 
 end
 
 recieveSignal = function(e, signal)
-	if signal == "white" then
-		color = "white"
-	elseif signal == "blue" then
-		color = "blue"
+	if signal == "White" then
+		color = "White"
+		graphic:SetColor(255,255,255)
+	elseif signal == "Blue" then
+		color = "Blue"
+		graphic:SetColor(50,50,255)
+	elseif signal == "Red" then
+		color = "Red"
+		graphic:SetColor(255,50,50)
 	end
 end

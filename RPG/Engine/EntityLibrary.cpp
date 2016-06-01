@@ -191,6 +191,10 @@ void EntityLibrary::Message(std::string entity, std::string message)
             system->PlayMusic();
         else if ( message == "Stop" )
             system->StopMusic();
+        else if ( message == "Loop" )
+            system->SetMusicLoop(true);
+        else if ( message == "Unloop" )
+            system->SetMusicLoop(false);
         else
             system->SetMusic(message);
     }

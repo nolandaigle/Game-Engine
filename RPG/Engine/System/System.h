@@ -81,6 +81,7 @@ public:
         GetView()->setSize(viewSize*256, viewSize*240);
     }
     void SetMusic(std::string file);
+    void SetMusicLoop(bool loop);
     void PlayMusic();
     void StopMusic();
     

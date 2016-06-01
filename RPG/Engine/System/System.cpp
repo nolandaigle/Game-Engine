@@ -236,3 +236,8 @@ void System::StopMusic()
 {
     music.stop();
 }
+
+void System::SetMusicLoop(bool loop)
+{
+    music.setLoop(loop);
+}

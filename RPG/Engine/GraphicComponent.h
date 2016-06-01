@@ -41,6 +41,7 @@ public:
     void SetRotation(int rot );
     void AddFrame(std::string anim, int x, int y);
     void Play(std::string anim);
+    void PlayLoop(std::string anim, bool loop);
     void Stop();
     void SetAnimation(std::string anim);
     void SetFPS(int fps );

@@ -86,13 +86,14 @@ public:
   /**
       Wrapper for lua_pcall that throws.
   */
+    
   static void pcall (lua_State* L, int nargs = 0, int nresults = 0, int msgh = 0)
   {
     int code = lua_pcall (L, nargs, nresults, msgh);
       
 
     if (code != LUABRIDGE_LUA_OK)
-      Throw (LuaException (L, code));
+        Throw (LuaException (L, code));;
   }
 
   //----------------------------------------------------------------------------
@@ -107,7 +108,7 @@ protected:
     }
     else
     {
-      // stack is empty
+     //  stack is empty
       m_what = "missing error";
     }
   }

@@ -24,6 +24,8 @@ public:
     MapComponent(System *_system);
     ~MapComponent();
     void SetMap(Map *_map);
+    Map *GetMap() { return map; }
+    std::string GetName();
     int GetWidth();
     int GetHeight();
     void Multiply();

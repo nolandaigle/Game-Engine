@@ -59,7 +59,7 @@ public:
     //Messages a specific entity by name
      void Message(std::string entity, std::string message);
     //Returns an entity in the library by name
-    Entity *GetEntity(std::string name) { return entities[name]; }
+    Entity *GetEntity(std::string name) { if ( entities[name] ) {return entities[name]; } else { return NULL; } }
     //Gets the upcoming map to switch to
     std::string GetNextMap() { return nextMap; }
     //Set the nextmap

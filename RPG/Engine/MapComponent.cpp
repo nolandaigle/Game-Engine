@@ -65,3 +65,13 @@ int MapComponent::GetHeight()
     else
         return -1;
 }
+
+std::string MapComponent::GetName()
+{
+    if ( map != NULL )
+    {
+        return map->GetName();
+    }
+    else
+        return "";
+}

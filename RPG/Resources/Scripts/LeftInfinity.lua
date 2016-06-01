@@ -1,15 +1,8 @@
-xvel = 0
-yvel = 0
-medTimer = 0
-
 bang = function(e)
 	e:AddComponent("TransformComponent")
 
 	e:SetScreenColor( 0, 0, 0 )
 	e:AddComponent("ScreenComponent")
-
-	medTimer = 0.0
-	teleportTime = 5
 
 	e:AddComponent("MapComponent")
 	map = e:GetMap()
@@ -17,73 +10,58 @@ bang = function(e)
 	--Player entry
 	e:AddComponent("FileComponent")
 	file = e:GetFC()
-	file:OpenFile("playerexit.save")
-	enterSide = file:GetLine()
-	y = file:GetLine()
-	file:CloseFile()
+	file:OpenFile("Game.save")
+	enterSide = file:GetVariable("Player-exit")
+	y = tonumber(file:GetVariable("Player-y"))
 
-	if enterSide == "Field" then
-		e:CreateEntity( 948, 150, "Player", "" )
+	if enterSide == "Ray" then
+		e:CreateEntity( 960, 150, "Player", "" )
+		player = e:GetEntity("Player")
+		player:GetGC():Play("WalkRight")
+		e:GetScreen():Reset()
+		e:GetScreen():Zoom(.5)
+	elseif enterSide == "Left-up" or enterSide == "Left-down" then
+		e:CreateEntity( 960, y, "Player", "" )
 		player = e:GetEntity("Player")
 		player:GetGC():Play("WalkLeft")
-	elseif enterSide == "rightup" or enterSide == "rightdown" then
-		e:CreateEntity( 948, tonumber(y), "Player", "" )
-		player = e:GetEntity("Player")
-		player:GetGC():Play("WalkLeft")
-
-		if enterSide == "rightup" then
+		if enterSide == "Left-up" then
 			e:GetScreen():Zoom(.5)
 		end
-		if enterSide == "rightdown" then
-			if e:GetScreen():GetWidth() < 960 then
-				e:GetScreen():Zoom(2)
-			end
+		if enterSide == "Left-down" then
+			e:GetScreen():Zoom(1.75)
 		end
 	end
 end
 
 update = function(e)
 
-	if e:KeyPressed("up") == true or e:KeyPressed("down") == true or e:KeyPressed("left") == true or e:KeyPressed("right") == true then
-		medTimer = 0.0
-	end
-
 	--Player Exit
 	if player:GetTransform().x > map:GetWidth() then
 		if player:GetTransform().y < 200 then
 
-			if e:GetScreen():GetWidth() >= 960 then
-				file = io.open("playerexit.save", "w")
-				file:write("Right\n")
-				file:write(player:GetTransform().y)
-				file:close()
-				e:Message("Map", "Field.json")
+			if e:GetScreen():GetWidth() >= 900 then
+				e:Message("Map", "Ray.json")
+				file:OpenFile("Game.save")
+				file:SetVariable("Warp", "1")
+				file:WriteFile()
 			else
-				file = io.open("playerexit.save", "w")
-				file:write("rightup\n")
-				file:write(player:GetTransform().y)
-				file:close()
+				file:OpenFile("Game.save")
+				file:SetVariable("Player-exit", "Right-up")
+				file:SetVariable("Player-x", e:GetEntity("Player"):GetTransform().x)
+				file:SetVariable("Player-y", e:GetEntity("Player"):GetTransform().y)
+				file:WriteFile()
 				e:Message("Map", "RightInfinity.json")
 			end
 		elseif player:GetTransform().y > 200 then
-			file = io.open("playerexit.save", "w")
-			file:write("rightdown\n")
-			file:write(player:GetTransform().y)
-			file:close()
+			file:OpenFile("Game.save")
+				file:SetVariable("Player-exit", "Right-down")
+				file:SetVariable("Player-x", e:GetEntity("Player"):GetTransform().x)
+				file:SetVariable("Player-y", e:GetEntity("Player"):GetTransform().y)
+				file:WriteFile()
 			e:Message("Map", "RightInfinity.json")
 		end
 	end
 
-	--Meditation Timer
-	medTimer = medTimer + e:GetDeltaTime()
-
-	if medTimer > teleportTime then
-		e:GetScreen():SetPixelate( true, .5, .0001)
-		if medTimer > teleportTime + 10 then 
-			e:Message("Map", "Clones.json")
-			medTimer = 0
-		end
-	end
 end
 
 display = function(e)

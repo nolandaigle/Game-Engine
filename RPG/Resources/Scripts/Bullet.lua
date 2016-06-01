@@ -17,17 +17,22 @@ bang = function(e, i)
 	transform:SetSize(8, 8)
 	e:AddComponent("CollisionComponent")
 	e:GetCC():SetType("bullet")
+	e:AddComponent("MapComponent")
+	map = e:GetMap()
 end
 
 update = function(e)
 	
+	if transform.x > map:GetWidth() then
+		transform.x = 0
+	end
+
 	if alive == true then
-		guru = e:GetCC():CollidingName("all")
-		if guru ~= "" then
-			if e:GetEntity(guru):GetCC():GetType() == "guru" then
-				e:Message(guru, "bullet")
-				alive = false
-			end
+		other = e:GetCC():CollidingName("all")
+		if other ~= "" then
+			e:Message(other, "bullet")
+			alive = false
+			e:GetCC():SetType("open")
 		end
 	end
 

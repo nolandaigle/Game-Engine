@@ -447,6 +447,7 @@ void Entity::LoadScript(char* filename)
     .addFunction("SetFrameSize", &GraphicComponent::SetFrameSize )
     .addFunction("AddFrame", &GraphicComponent::AddFrame)
     .addFunction("Play", &GraphicComponent::Play)
+    .addFunction("PlayLoop", &GraphicComponent::PlayLoop)
     .addFunction("Playing", &GraphicComponent::Playing)
     .addFunction("Show", &GraphicComponent::Show )
     .addFunction("Disappear", &GraphicComponent::Disappear)
@@ -500,9 +501,9 @@ void Entity::LoadScript(char* filename)
     .beginClass<MapComponent>("MapComponent")
     .addConstructor<void(*) (System*)>()
     .addFunction("GetEntityName", &Component::GetEntityName)
-    .addFunction("SetMap", &MapComponent::SetMap)
     .addFunction("GetWidth", &MapComponent::GetWidth)
     .addFunction("GetHeight", &MapComponent::GetHeight)
+    .addFunction("GetName", &MapComponent::GetName)
     .addFunction("Multiply", &MapComponent::Multiply)
     .endClass()
     
@@ -689,7 +690,10 @@ void Entity::PrintMessage(std::string message)
 
 Entity *Entity::GetEntity(std::string name)
 {
-    return EntityLibrary::instance()->GetEntity(name);
+    if ( EntityLibrary::instance()->GetEntity(name) )
+        return EntityLibrary::instance()->GetEntity(name);
+    else
+        return NULL;
 }
 
 void Entity::Signal(std::string signal)
@@ -726,6 +730,8 @@ std::string Entity::CreateEntity( int _x, int _y, std::string _name, std::string
     Entity *e;
     e = EntityLibrary::instance()->AddEntity(_x, _y, _name, true, info);
     e->Bang(info);
+    if ( mc != NULL )
+        e->SetMap(mc->GetMap());
     EntityLibrary::instance()->Sort("Layer");
     return e->GetName();
 }

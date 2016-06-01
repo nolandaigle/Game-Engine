@@ -15,9 +15,8 @@ bang = function(e)
 
 	e:AddComponent("FileComponent")
 	file = e:GetFC()
-	file:OpenFile("playerexit.save")
-	enterSide = file:GetLine()
-	file:CloseFile()
+	file:OpenFile("Game.save")
+	enterSide = file:GetVariable("Player-exit")
 
 	if enterSide == "Bottom" then
 		e:CreateEntity( 206, 0, "Player", "" )
@@ -43,17 +42,18 @@ update = function(e)
 		if player:GetTransform().x > 112 then
 			player:GetTransform().y = map:GetHeight()
 		else
-			file = io.open("playerexit.save", "w")
-			file:write("Top\n")
-			file:close()
-			e:Message("Map", "ThreesCompany.json")
+			file:OpenFile("Game.save")
+			file:SetVariable("Player-exit", "Top")
+			file:WriteFile()
+			e:Message("Map", "Endoftheroad.json")
 		end
 	elseif player:GetTransform().y > map:GetHeight() then
 		if player:GetTransform().x > 112 then
-			file = io.open("playerexit.save", "w")
-			file:write("Top\n")
-			file:close()
-			e:Message("Map", "Field.json")
+			e:Message("Map", "caveNetwork.json")
+			file:OpenFile("Game.save")
+			file:SetVariable("Warp", "3")
+			file:WriteFile()
+			e:Signal("unlocked")
 		else
 			player:GetTransform().y = -16
 		end

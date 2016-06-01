@@ -8,15 +8,14 @@ facing = 1
 bullets = {}
 bulletNum = 0
 
-color = "blue"
+color = "Blue"
 
 bang = function(e)
 
 	e:AddComponent("FileComponent")
 	file = e:GetFC()
-	file:OpenFile("playercolor.save")
-	color = file:GetLine()
-	file:CloseFile()
+	file:OpenFile("Game.save")
+	color = file:GetVariable("Color")
 
 	e:AddComponent("GraphicComponent")
 	graphic = e:GetGC()
@@ -39,19 +38,24 @@ bang = function(e)
 	e:AddComponent("MapComponent")
 	map = e:GetMap()
 	e:AddComponent("ScreenComponent")
+	screen = e:GetScreen()
 	medTimer = 0.0
 	teleportTime = 5
 end
 
 update = function(e)
+	
+	pressing = false
 
 	--Movement Input
 	if e:KeyPressed("left") == true then
+		pressing = true
 		medTimer = 0
 		if xvel < speed then
 			xvel = xvel + acceleration
 		end
 	elseif e:KeyPressed("right") == true then
+		pressing = true
 		medTimer = 0
 		if xvel > -speed then
 			xvel = xvel - acceleration
@@ -65,17 +69,23 @@ update = function(e)
 	end
 	
 	if e:KeyPressed("down") == true then
+		pressing = true
 		medTimer = 0
 		if yvel > -speed then
 			yvel = yvel - acceleration
 		end
 	elseif e:KeyPressed("up") == true then
+		pressing = true
 		medTimer = 0
 		if yvel < speed then
 			yvel = yvel + acceleration
 		end
 	else
 		yvel = 0
+	end
+
+	if pressing == false then
+		graphic:Stop()
 	end
 
 
@@ -86,20 +96,6 @@ update = function(e)
 
 	if medTimer > teleportTime then
 		graphic:Play("Meditate")
-	end
-
-	--Tile Collision detection and resolution
-	while e:GetCC():CollidingType("left") == "Block" do
-		transform.x = transform.x + 1;
-	end
-	while e:GetCC():CollidingType("right") == "Block" do
-		transform.x = transform.x - 1;
-	end
-	while e:GetCC():CollidingType("top") == "Block" do
-		transform.y = transform.y + 1;
-	end
-	while e:GetCC():CollidingType("bottom") == "Block" do
-		transform.y = transform.y - 1;
 	end
 
 	--Map Exits
@@ -120,21 +116,63 @@ update = function(e)
 	end
 
 	--Move transform position by xvel and yvel
-	transform.x = e:Round(transform.x+xvel)
-	transform.y = e:Round(transform.y+yvel)
+	transform.x = (transform.x+xvel)
+	transform.y = (transform.y+yvel)
 
-	--SIGNAL color
-	e:Signal(color)
+	if e:GetCC():CollidingType("all") == "Tripper" then
+		if color == "White" then
+			changeColor(e, "Blue")
+			graphic:Play("Hurt")
+		elseif color == "Blue" then
+		end
+	end
+
+
+	--Tile Collision detection and resolution
+	while e:GetCC():CollidingType("left") == "Sokobox" do
+		s = e:GetCC():CollidingName("left")
+		e:Message(s, "left")
+		transform.x = transform.x + 1;
+	end
+	while e:GetCC():CollidingType("right") == "Sokobox" do
+		s = e:GetCC():CollidingName("right")
+		e:Message(s, "right")
+		transform.x = transform.x - 1;
+	end
+	while e:GetCC():CollidingType("top") == "Sokobox" do
+		s = e:GetCC():CollidingName("top")
+		e:Message(s, "up")
+		transform.y = transform.y + 1;
+	end
+	while e:GetCC():CollidingType("bottom") == "Sokobox" do
+		s = e:GetCC():CollidingName("bottom")
+		e:Message(s, "down")
+		transform.y = transform.y - 1;
+	end
+
+	--Tile Collision detection and resolution
+	while e:GetCC():CollidingType("left") == "Block" do
+		transform.x = transform.x + 1;
+	end
+	while e:GetCC():CollidingType("right") == "Block" do
+		transform.x = transform.x - 1;
+	end
+	while e:GetCC():CollidingType("top") == "Block" do
+		transform.y = transform.y + 1;
+	end
+	while e:GetCC():CollidingType("bottom") == "Block" do
+		transform.y = transform.y - 1;
+	end
 end
 
 display = function(e)
 	if graphic then
-		if color == "blue" then
+		if color == "Blue" then
 			graphic:SetColor(50,50,255)
-		elseif color == "white" then
+		elseif color == "White" then
 			graphic:SetColor(255,255,255)
 		end
-		graphic:Display(transform.x, transform.y)
+		graphic:Display(math.floor(transform.x), math.floor(transform.y))
 	end
 end
 
@@ -143,6 +181,12 @@ onKeyPress = function(e,k)
 	medTimer = -1
 
 	--Movement/Animation
+	if k == "a" then
+		file:OpenFile("Game.save")
+		file:SetVariable("Player-exit", "Top")
+		file:WriteFile()
+		e:Message("Map", "ThreesCompany.json")
+	end
 	if k == "right" then
 		facing = -1
 		graphic:Play("WalkLeft")
@@ -152,20 +196,28 @@ onKeyPress = function(e,k)
 		graphic:Play("WalkRight")
 		e:Signal("BreakConv")
 	end
-	if k == "down" and facing == -1 then
-		graphic:Play("WalkLeft")
+	if k == "down" then
+		if facing == 1 then
+			graphic:Play("WalkRight")
+		else
+			graphic:Play("WalkLeft")
+		end
 		e:Signal("BreakConv")
-	elseif k == "up" and facing == 1 then
-		graphic:Play("WalkRight")
+	elseif k == "up" then
+		if facing == 1 then
+			graphic:Play("WalkRight")
+		else
+			graphic:Play("WalkLeft")
+		end
 		e:Signal("BreakConv")
 	end
 
 	--NPC interaction
-	guru = ""
+	npc = ""
 	if k == "x" then
-		guru = e:GetCC():CollidingName("all")
-		if guru ~= "" then
-			e:Message(guru, "Dialogue")
+		npc = e:GetCC():CollidingName("all")
+		if npc ~= "" then
+			e:Message(npc, "Dialogue")
 		end
 	end
 
@@ -174,31 +226,37 @@ onKeyPress = function(e,k)
 		bullets[bulletNum] = e:CreateEntity( transform.x + (facing*4), transform.y + 8, "Bullet", facing )
 		bulletNum = bulletNum + 1
 		xvel = -facing*recoil
-	end
+
+	end 
 
 	--Changeworlds
 	if k == "r" then
-		color = "white"
-		file = io.open("playercolor.save", "w")
-		file:write(color)
-		file:close()
-		e:Signal(color)
+		changeColor(e, "White")
+		file:OpenFile("Game.save")
+		file:SetVariable("Color", "White")
+		file:WriteFile()
 	elseif k == "t" then
-		color = "blue"
-		file = io.open("playercolor.save", "w")
-		file:write(color)
-		file:close()
-		e:Signal(color)
+		changeColor(e, "Blue")
+		file:OpenFile("Game.save")
+		file:SetVariable("Color", "Blue")
+		file:WriteFile()
 	end
 end
 
 onKeyRelease = function(e,k)
 	
 	medTimer = 0
+end
 
-	if k == "right" then
-		graphic:Stop()
-	elseif k == "left" then
-		graphic:Stop()
+changeColor = function(e, newcolor)
+	color = newcolor
+	file:OpenFile("Game.save")
+	file:SetVariable("Color", color)
+	file:WriteFile()
+	e:Signal(color)
+	if color == "Blue" then
+		e:Message("Music", "Stop")
+		e:Message("Music", "Resources/Music/spirit.wav")
+		e:Message("Music", "Play")
 	end
 end

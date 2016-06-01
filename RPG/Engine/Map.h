@@ -33,6 +33,7 @@ public:
     int GetHeight() { return mapHeight; }
     int GetTileWidth() { return tileWidth; }
     int GetTileHeight() { return tileHeight; }
+    std::string GetName() { return filename; }
 };
 
 #endif /* defined(__RPG__Map__) */

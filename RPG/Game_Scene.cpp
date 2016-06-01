@@ -21,7 +21,7 @@ Game_Scene::Game_Scene(System *_system) : Scene(_system)
 void Game_Scene::Bang()
 {
     //Load MAP
-    map->Load(resourcePath()+"Resources/Maps/Intro.json");
+    map->Load(resourcePath()+"Resources/Maps/Logo.json");
     eL->Bang();
     //Sort entities by layer
     eL->Sort("Layer");
