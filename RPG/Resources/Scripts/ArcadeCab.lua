@@ -1,43 +1,32 @@
+conversation = 0
 color = "White"
 alive = true
-health = 5
 
 bang = function(e)
-	e:SetScreenColor( 0, 0, 0 )
 	e:AddComponent("GraphicComponent")
 	graphic = e:GetGC()
-	graphic:SetImage("Player.png")
-	graphic:SetFrameSize(8,16)
-	graphic:AddFrame("WalkRight", 0, 0)
-	graphic:AddFrame("WalkRight", 1, 0)
-	graphic:AddFrame("WalkLeft", 0, 1)
-	graphic:AddFrame("WalkLeft", 1, 1)
-	graphic:AddFrame("Meditate", 0, 2)
-	graphic:AddFrame("Meditate", 1, 2)
-	graphic:AddFrame("Hurt", 0, 3)
-	graphic:AddFrame("Hurt", 1, 3)
-	graphic:Play("Meditate")
+	graphic:SetImage("Arcade.png")
+	graphic:SetFrameSize(16,20)
+	graphic:AddFrame("Stand", 0, 0)
+	graphic:Play("Stand")
 	graphic:Stop()
 	e:AddComponent("TransformComponent")
 	transform = e:GetTransform()
-	transform:SetSize(8, 16)
+	transform:SetSize(16, 20)
 	e:AddComponent("CollisionComponent")
-	e:GetCC():SetType("guru")
+	e:GetCC():SetType("Arcade")
 
 	--DIALOGUE stuff
 	e:AddComponent("DialogComponent")
 	dialogue = e:GetDC()
 	dialogue:ShowGraphic(false)
-	dialogue:PushMessage("When spirit fails,\n matter prevails.")
+	dialogue:PushMessage("Loading ArcadeGame.json...\nLoading Paean To The Noble.wav...\nInitiating GODHEAD...\nInitializing Ram...\nHare Krishna...Hare Hare\nREADY")
 end
 
 update = function(e)
-	if health < 1 then
-		alive = false
-	end
 end
 
-display = function(e)	
+display = function(e)
 	if graphic then
 		if color == "Blue" then
 			graphic:SetColor(50,50,255)
@@ -59,17 +48,18 @@ end
 recieveMessage = function(e, message)
 	if message == "Dialogue" then
 		if e:GetDC() then
+			conversation = conversation + 1
 			dialogue:OpenDialogue()
+			if conversation == 2 then
+				e:Message("Map", "ArcadeGame.json")
+			end
 		end
-	end
-	if message == "bullet" then
-		health = health - 1
 	end
 end
 
 recieveSignal = function(e, signal)
-	charMove = signal
 	if signal == "BreakConv" then
+		conversation = 0
 		if e:GetDC() then
 			dialogue:HideBox()
 		end

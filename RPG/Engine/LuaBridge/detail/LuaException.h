@@ -84,7 +84,7 @@ public:
 
   //----------------------------------------------------------------------------
   /**
-      Wrapper for lua_pcall that throws.
+      Wrapper for lua_pcall that throws.z
   */
     
   static void pcall (lua_State* L, int nargs = 0, int nresults = 0, int msgh = 0)

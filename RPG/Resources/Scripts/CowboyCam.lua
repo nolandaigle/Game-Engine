@@ -20,7 +20,7 @@ update = function(e)
 end
 
 lateUpdate = function(e)
-	player = e:GetEntity("Player"):GetTransform()
+	player = e:GetEntity("Cowboy"):GetTransform()
 
 	
 		if player then

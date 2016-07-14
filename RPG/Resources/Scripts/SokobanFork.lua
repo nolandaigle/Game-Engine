@@ -60,7 +60,7 @@ recieveSignal = function(e, signal)
 		reset = true
 	end
 	if signal == "Top" then
-		e:Message("Map", "Growup.json")
+		e:Message("Map", "Arcade.json")
 		file:OpenFile("Game.save")
 		file:SetVariable("Warp", "1")
 		file:WriteFile()

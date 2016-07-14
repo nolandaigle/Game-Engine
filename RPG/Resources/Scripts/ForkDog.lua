@@ -37,9 +37,9 @@ recieveSignal = function(e, signal)
 		file:SetVariable("Warp", "2")
 		file:WriteFile()
 	elseif signal == "Right" then
-		e:Message("Map", "caveNetwork.json")
+		e:Message("Map", "ForkFam.json")
 		file:OpenFile("Game.save")
-		file:SetVariable("Warp", "4")
+		file:SetVariable("Warp", "1")
 		file:WriteFile()
 	elseif signal == "Top" then
 		e:Message("Map", "DogPark.json")

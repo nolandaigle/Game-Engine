@@ -6,6 +6,7 @@
 //  Copyright (c) 2016 Nolan Daigle. All rights reserved.
 //
 
+#include "ResourcePath.hpp"
 #include "FileComponent.h"
 
 FileComponent::FileComponent(System *_system) : Component(_system)
@@ -18,7 +19,9 @@ FileComponent::~FileComponent()
 
 void FileComponent::OpenFile(std::string fi)
 {
-    filename = fi;
+    std::cout<<GetEntityName()<<std::endl;
+    filename = resourcePath()+"Resources/Saves/"+fi;
+    std::cout<<filename<<std::endl;
     file.clear();
     std::ifstream ifstr(filename);
     ifstr>>file;

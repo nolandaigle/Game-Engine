@@ -75,7 +75,7 @@ update = function(e)
 		timer = 0
 	end
 
-	if timer > 1 then
+	if timer > 2.5 then
 		e:Message("Music", "Stop")
 		e:Message("Music", "Resources/Music/In The Belly of a Shark.wav")
 		e:Message("Music", "Play")

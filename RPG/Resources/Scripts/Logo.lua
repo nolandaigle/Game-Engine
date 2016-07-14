@@ -22,8 +22,8 @@ end
 
 update = function(e)
 	timer = timer + e:GetDeltaTime()
-	if timer > 6.5 then
-		e:Message("Map", "Intro.json")
+	if timer > 10 then
+		e:Message("Map", "ArcadeGame.json")
 	end
 end
 
@@ -35,14 +35,14 @@ end
 
 onKeyPress = function(e,k)
 	if k == "q" then
-		e:Message("Map", "caveNetwork.json")
+		e:Message("Map", "Graveyard.json")
 		file:OpenFile("Game.save")
 		file:SetVariable("Warp", "1")
 		file:WriteFile()
 	else
-		e:Message("Map", "Clones.json")
-		file:OpenFile("Game.save")
-		file:SetVariable("Color", "White")
-		file:WriteFile()
+		e:Message("Map", "Intro.json")
+	--	file:OpenFile("Game.save")
+	--	file:SetVariable("Color", "White")
+	--	file:WriteFile()
 	end
 end

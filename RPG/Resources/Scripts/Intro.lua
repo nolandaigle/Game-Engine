@@ -22,6 +22,9 @@ bang = function(e)
 	dialogue:PushMessage("The strangest feeling but I can't be sure.\n Something that's old as forever.")
 	dialogue:PushMessage("\n\n\n\n\n\n\n\n\n\n\n-J Cole")
 
+	e:AddComponent("FileComponent")
+	file = e:GetFC()
+
 end
 
 update = function(e)
@@ -42,5 +45,11 @@ onKeyPress = function(e,k)
 	end
 	if conversation == 6 then
 		e:Message("Map", "Box.json")
+	end
+	if k == "q" then
+		e:Message("Map", "Ray2.json")
+		file:OpenFile("Game.save")
+		file:SetVariable("Warp", "1")
+		file:WriteFile()
 	end
 end
