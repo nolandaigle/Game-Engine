@@ -1,10 +1,17 @@
 xvel = 0
+yvel = 0
 speed = 3
 color = "white"
 alive = true
 
 bang = function(e, i)
 	xvel = tonumber(i)*speed
+
+	if tonumber(i) == 0 then
+		xvel = 0
+		yvel = -2
+	end
+
 	e:SetScreenColor( 0, 0, 0 )
 	e:AddComponent("GraphicComponent")
 	graphic = e:GetGC()
@@ -30,21 +37,25 @@ update = function(e)
 	if alive == true then
 		other = e:GetCC():CollidingName("all")
 		if other ~= "" then
-			e:Message(other, "bullet")
-			alive = false
-			e:GetCC():SetType("open")
+			if e:GetEntity(other):GetCC():GetType() ~= "" then
+				e:Message(other, "bullet")
+                alive = falsezz
+			end
 		end
 	end
 
 	transform.x = transform.x + xvel
+	transform.y = transform.y + yvel
 end
 
 display = function(e)
 	if graphic and alive == true then
-		if color == "blue" then
+		if color == "Blue" then
 			graphic:SetColor(50,50,255)
-		elseif color == "white" then
+		elseif color == "Blue" then
 			graphic:SetColor(255,255,255)
+		elseif color == "Red" then
+			graphic:SetColor(255,50,50)
 		end
 		graphic:Display(transform.x, transform.y)
 	end
@@ -60,9 +71,11 @@ recieveMessage = function(e, message)
 end
 
 recieveSignal = function(e, signal)
-	if signal == "white" then
-		color = "white"
-	elseif signal == "blue" then
-		color = "blue"
+	if signal == "White" then
+		color = "White"
+	elseif signal == "Blue" then
+		color = "Blue"
+	elseif signal == "Red" then
+		color = "Red"
 	end
 end

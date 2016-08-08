@@ -2,6 +2,8 @@ color = "White"
 alive = true
 health = 5
 
+conversation = 0
+
 bang = function(e)
 	e:AddComponent("GraphicComponent")
 	graphic = e:GetGC()
@@ -27,6 +29,7 @@ bang = function(e)
 	e:AddComponent("DialogComponent")
 	dialogue = e:GetDC()
 	dialogue:ShowGraphic(false)
+	dialogue:SetVoice("pop.wav")
 	dialogue:PushMessage("No he doesn't.")
 end
 
@@ -48,7 +51,7 @@ display = function(e)
 			graphic:Display(transform.x, transform.y)
 		end
 		if color == "Red" then
-			graphic:SetColor(255,50,50)
+			graphic:SetColor(255,255,255)
 			graphic:Display(transform.x, transform.y)
 		end
 	end
@@ -64,6 +67,12 @@ recieveMessage = function(e, message)
 	if message == "Dialogue" then
 		if e:GetDC() then
 			dialogue:OpenDialogue()
+			conversation = conversation + 1
+			if color == "Red" and conversation == 2 then
+				e:Message("Map", "GODHEAD.json")
+--				e:Message("Map", "RedBox.json")
+				dialogue:HideBox()
+			end
 		end
 	end
 	if message == "bullet" then
@@ -76,6 +85,7 @@ recieveSignal = function(e, signal)
 	if signal == "BreakConv" then
 		if e:GetDC() then
 			dialogue:HideBox()
+			conversation = 0
 		end
 	end
 	if signal == "White" then
@@ -86,5 +96,27 @@ recieveSignal = function(e, signal)
 		color = "Blue"
 		dialogue:Clear()
 		dialogue:PushMessage("No I don't.")
+	elseif signal == "Red" then
+		color = "Red"
+		dialogue:Clear()
+		
+		dialogue:PushMessage("")
+
+		graphic:SetImage("Rainbow.png")
+		graphic:SetFrameSize(16,16)
+		graphic:AddFrame("Warp", 0, 0)
+		graphic:AddFrame("Warp", 1, 0)
+		graphic:AddFrame("Warp", 2, 0)
+		graphic:AddFrame("Warp", 3, 0)
+		graphic:AddFrame("Warp", 0, 1)
+		graphic:AddFrame("Warp", 1, 1)
+		graphic:AddFrame("Warp", 2, 1)
+		graphic:AddFrame("Warp", 1, 1)
+		graphic:AddFrame("Warp", 0, 1)
+		graphic:AddFrame("Warp", 3, 0)
+		graphic:AddFrame("Warp", 2, 0)
+		graphic:AddFrame("Warp", 1, 0)
+		graphic:SetFPS(20)
+		graphic:Play("Warp")
 	end
 end

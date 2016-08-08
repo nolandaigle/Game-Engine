@@ -18,6 +18,10 @@ bang = function(e)
 	e:AddComponent("ScreenComponent")
 	e:GetScreen():Reset()
 	e:GetScreen():Zoom(.35)
+
+	e:Message("Music", "Stop")
+	e:Message("Music", "Resources/Music/Robojazz.wav")
+	e:Message("Music", "Play")
 end
 
 update = function(e)
@@ -28,6 +32,13 @@ recieveSignal = function(e, signal)
 		e:Message("Map", "SokobanFork.json")
 		file:OpenFile("Game.save")
 		file:SetVariable("Warp", "3")
+		file:WriteFile()
+		e:Message("Music", "Stop")
+	end
+	if signal == "Top" then
+		e:Message("Map", "RoboCorner.json")
+		file:OpenFile("Game.save")
+		file:SetVariable("Warp", "1")
 		file:WriteFile()
 	end
 end

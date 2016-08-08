@@ -38,7 +38,7 @@ bang = function(e)
 	e:AddComponent("DialogComponent")
 	dialogue = e:GetDC()
 	dialogue:ShowGraphic(false)
-	dialogue:SetVoice("woo.wav")
+	dialogue:SetVoice("uh.wav")
 	if boned == "not" then
 		dialogue:PushMessage("I'm missing one bone...\n My bones are all I have!")
 		dialogue:PushMessage("Where could it be...?\n I have no friends! I need\n my bones!")

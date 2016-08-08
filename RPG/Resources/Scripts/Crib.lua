@@ -27,6 +27,7 @@ end
 update = function(e)
 	if health < 1 then
 		alive = false
+		e:Signal("Killed")
 	end
 end
 

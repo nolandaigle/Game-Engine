@@ -45,9 +45,11 @@ recieveSignal = function(e, signal)
 		file:WriteFile()
 	end
 	if signal == "Top" then
-		e:Message("Map", "SideLoop.json")
+		e:Message("Map", "Mirror.json")
 		file:OpenFile("Game.save")
-		file:SetVariable("Warp", "1")
+		file:SetVariable("Player-exit", "Top")
+		file:SetVariable("Player-x", e:GetEntity("Player"):GetTransform().x)
+		file:SetVariable("Player-y", e:GetEntity("Player"):GetTransform().y)
 		file:WriteFile()
 	end
 	if signal == "Blue" and color ~= "Blue" then

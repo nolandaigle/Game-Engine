@@ -1,6 +1,6 @@
 color = "White"
-alive = false
-health = 0
+alive = true
+health = 1
 timer = 0
 
 x = 0.0
@@ -56,6 +56,7 @@ end
 update = function(e)
 	if health < 1 then
 		alive = false
+		e:Signal("Killed")
 	end
 end
 
@@ -84,6 +85,12 @@ recieveMessage = function(e, message)
 		if e:GetDC() then
 			conversation = conversation + 1
 			dialogue:OpenDialogue()
+
+			if conversation == 1 and tripped == false then
+				e:Message("Music", "Stop")
+				e:Message("Music", "Resources/Music/mary.wav")
+				e:Message("Music", "Play")
+			end
 
 			if conversation == 2 and tripped == true then
 				conversation = 0

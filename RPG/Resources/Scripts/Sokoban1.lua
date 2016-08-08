@@ -57,9 +57,9 @@ recieveSignal = function(e, signal)
 		reset = true
 	end
 	if signal == "Right" then
-		e:Message("Map", "caveNetwork.json")
+		e:Message("Map", "Ray.json")
 		file:OpenFile("Game.save")
-		file:SetVariable("Warp", "4")
+		file:SetVariable("Warp", "1")
 		file:WriteFile()
 		file:OpenFile("Sokoban1.save")
 		file:SetVariable("locked", "true")

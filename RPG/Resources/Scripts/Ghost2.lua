@@ -75,6 +75,20 @@ update = function(e)
 	if health < 1 then
 		alive = false
 	end
+
+	--Tile Collision detection and resolution
+	while e:GetCC():CollidingType("left") == "Block" do
+		transform.x = transform.x + 1;
+	end
+	while e:GetCC():CollidingType("right") == "Block" do
+		transform.x = transform.x - 1;
+	end
+	while e:GetCC():CollidingType("top") == "Block" do
+		transform.y = transform.y + 1;
+	end
+	while e:GetCC():CollidingType("bottom") == "Block" do
+		transform.y = transform.y - 1;
+	end
 end
 
 display = function(e)

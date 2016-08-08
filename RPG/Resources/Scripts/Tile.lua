@@ -33,6 +33,8 @@ bang = function(e, i)
 		graphic:SetColor(255,255,255)
 	elseif color == "Blue" then
 		graphic:SetColor(50,50,255)
+	elseif color == "Red" then
+		graphic:SetColor(255,50,50)
 	end
 
 	if e:GetLayer() == 1 then
@@ -41,8 +43,6 @@ bang = function(e, i)
 		collider:SetTransform(e:GetTransform())
 		collider:SetType("Block")
 	end
-
-	print(color)
 end
 
 display = function(e)

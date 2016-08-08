@@ -20,7 +20,7 @@ bang = function(e)
 	e:AddComponent("DialogComponent")
 	dialogue = e:GetDC()
 	dialogue:ShowGraphic(false)
-	dialogue:PushMessage("Loading ArcadeGame.json...\nLoading Paean To The Noble.wav...\nInitiating GODHEAD...\nInitializing Ram...\nHare Krishna...Hare Hare\nREADY")
+	dialogue:PushMessage("Loading ArcadeGame.json...\nLoading Mystic Cowboy.wav...\nInitiating GODHEAD...\nInitializing Ram...\n\nREADY")
 end
 
 update = function(e)
@@ -52,6 +52,7 @@ recieveMessage = function(e, message)
 			dialogue:OpenDialogue()
 			if conversation == 2 then
 				e:Message("Map", "ArcadeGame.json")
+				e:Message("Music", "Stop")
 			end
 		end
 	end

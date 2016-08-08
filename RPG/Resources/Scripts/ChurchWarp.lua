@@ -22,7 +22,7 @@ bang = function(e)
 
 	e:AddComponent("TransformComponent")
 	transform = e:GetTransform()
-	transform:SetSize(32, 16)
+	transform:SetSize(16, 16)
 	e:AddComponent("CollisionComponent")
 	e:GetCC():SetType("ChurchWarp")
 

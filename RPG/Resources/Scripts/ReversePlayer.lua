@@ -181,12 +181,6 @@ onKeyPress = function(e,k)
 	medTimer = -1
 
 	--Movement/Animation
-	if k == "a" then
-		file:OpenFile("Game.save")
-		file:SetVariable("Player-exit", "Top")
-		file:WriteFile()
-		e:Message("Map", "ThreesCompany.json")
-	end
 	if k == "right" then
 		facing = -1
 		graphic:Play("WalkLeft")

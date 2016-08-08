@@ -48,8 +48,8 @@ end
 update = function(e)
 	timer = timer + e:GetDeltaTime()
 	if timer > 8 and e:GetCC():CollidingType("all") == "" then
-		targetx = startx + math.random(- 32, 32)
-		targety = startx + math.random(- 32, 32)
+		targetx = startx + math.random(- 16, 16)
+		targety = startx + math.random(- 16, 16)
 		if targetx > x then
 			graphic:Play("WalkRight")
 		elseif targetx < x then
@@ -72,6 +72,19 @@ update = function(e)
 
 	if health < 1 then
 		alive = false
+	end
+	--Tile Collision detection and resolution
+	while e:GetCC():CollidingType("left") == "Block" do
+		transform.x = transform.x + 1;
+	end
+	while e:GetCC():CollidingType("right") == "Block" do
+		transform.x = transform.x - 1;
+	end
+	while e:GetCC():CollidingType("top") == "Block" do
+		transform.y = transform.y + 1;
+	end
+	while e:GetCC():CollidingType("bottom") == "Block" do
+		transform.y = transform.y - 1;
 	end
 end
 

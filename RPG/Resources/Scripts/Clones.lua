@@ -51,7 +51,7 @@ end
 
 recieveSignal = function(e, signal)
 	if signal == "Right" then
-		e:Message("Map", "Ray.json")
+		e:Message("Map", "Sokoban4.json")
 		file:OpenFile("Game.save")
 		file:SetVariable("Warp", "1")
 		file:WriteFile()

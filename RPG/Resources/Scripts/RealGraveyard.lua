@@ -24,4 +24,7 @@ recieveSignal = function(e, signal)
 		file:SetVariable("Warp", "1")
 		file:WriteFile()
 	end
+	if signal == "Meditated" then
+			e:Message("Map", "GODHEAD.json")
+	end
 end

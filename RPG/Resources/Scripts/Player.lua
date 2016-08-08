@@ -98,6 +98,8 @@ update = function(e)
 
 	if pressing == false then
 		graphic:Stop()
+	else
+		medTimer = 0
 	end
 
 
@@ -112,6 +114,7 @@ update = function(e)
 		if medTimer > teleportTime and stuck == false then
 			changeColor(e, "White")
 			e:Message("Map", "Clones.json")
+			e:Signal("Meditated")
 		end
 	end
 
@@ -180,29 +183,53 @@ update = function(e)
 	end
 
 	--Tile Collision detection and resolution
-	while e:GetCC():CollidingType("left") == "Block" do
+	while e:GetCC():CollidingType("left") == "Block" or e:GetCC():CollidingType("left") == "Bride" or e:GetCC():CollidingType("left") == "Groom" do
 		if color == "Red" then
 			hell(e)
+			transform.x = transform.x + 1;
+		elseif color == "White" then
+				transform.x = transform.x + 1;
+		elseif color == "Blue" then
+			if e:GetCC():CollidingType("left") == "Block" then
+				transform.x = transform.x + 1;
+			end
 		end
-		transform.x = transform.x + 1;
 	end
-	while e:GetCC():CollidingType("right") == "Block" do
+	while e:GetCC():CollidingType("right") == "Block" or e:GetCC():CollidingType("right") == "Bride" or e:GetCC():CollidingType("right") == "Groom" do
 		if color == "Red" then
 			hell(e)
+			transform.x = transform.x - 1;
+		elseif color == "White" then
+				transform.x = transform.x - 1;
+		elseif color == "Blue" then
+			if e:GetCC():CollidingType("right") == "Block" then
+				transform.x = transform.x - 1;
+			end
 		end
-		transform.x = transform.x - 1;
 	end
-	while e:GetCC():CollidingType("top") == "Block" do
+	while e:GetCC():CollidingType("top") == "Block" or e:GetCC():CollidingType("top") == "Bride" or e:GetCC():CollidingType("top") == "Groom" do
 		if color == "Red" then
 			hell(e)
+			transform.y = transform.y + 1;
+		elseif color == "White" then
+				transform.y = transform.y + 1;
+		elseif color == "Blue" then
+			if e:GetCC():CollidingType("top") == "Block" then
+				transform.y = transform.y + 1;
+			end
 		end
-		transform.y = transform.y + 1;
 	end
-	while e:GetCC():CollidingType("bottom") == "Block" do
+	while e:GetCC():CollidingType("bottom") == "Block" or e:GetCC():CollidingType("bottom") == "Bride" or e:GetCC():CollidingType("bottom") == "Groom" do
 		if color == "Red" then
 			hell(e)
+			transform.y = transform.y - 1;
+		elseif color == "White" then
+				transform.y = transform.y - 1;
+		elseif color == "Blue" then
+			if e:GetCC():CollidingType("bottom") == "Block" then
+				transform.y = transform.y - 1;
+			end
 		end
-		transform.y = transform.y - 1;
 	end
 end
 
@@ -222,7 +249,16 @@ end
 
 onKeyPress = function(e,k)
 
-	medTimer = 0
+	if k == "r" then
+		changeColor(e, "White")
+		e:Signal(color)
+	elseif k == "t" then
+		changeColor(e, "Blue")
+		e:Signal(color)
+	elseif k == "y" then
+		changeColor(e, "Red")
+		e:Signal(color)
+	end
 
 	--Movement/Animation
 	if k == "left" then
@@ -267,16 +303,6 @@ onKeyPress = function(e,k)
 		xvel = -facing*recoil
 		e:Signal(color)
 	end 
-
-	--Changeworlds
-	if k == "r" then
-		file:OpenFile("Game.save")
-	file:SetVariable("Warp", "1")
-	file:WriteFile()
-	e:Message("Map", "SokobanFork.json")
-	elseif k == "t" then
-		changeColor(e, "Blue")
-	end
 end
 
 onKeyRelease = function(e,k)
@@ -292,6 +318,12 @@ recieveMessage = function(e, message)
 end
 
 recieveSignal = function(e, signal)
+	if signal == "Killed" then
+		file:OpenFile("Quest.save")
+	file:SetVariable("Killed", "true")
+	file:WriteFile()
+	end
+
 	if signal == "Eat Player" then
 			showing = false
 	end

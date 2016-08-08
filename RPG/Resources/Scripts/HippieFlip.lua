@@ -26,8 +26,6 @@ bang = function(e)
 	elseif enterWarp == "3" then
 		e:Message("3", "Create" )
 	end
-
-	print("HIPPIEFLIP")
 end
 
 update = function(e)

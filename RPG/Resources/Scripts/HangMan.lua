@@ -45,7 +45,7 @@ end
 
 display = function(e)
 	if graphic then
-		if color == "Blue" and alive == false then
+		if color == "Blue" then
 			graphic:SetColor(50,50,255)
 			graphic:Display(transform.x, transform.y)
 		end
@@ -93,7 +93,6 @@ recieveSignal = function(e, signal)
 	if signal == "White" then
 		color = "White"
 	elseif signal == "Blue" then
-		dialogue:Clear()
 		color = "Blue"
 	end
 end

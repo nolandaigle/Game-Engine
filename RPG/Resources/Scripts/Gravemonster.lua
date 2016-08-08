@@ -10,10 +10,10 @@ starty = 0
 targetx = 0
 targety = 0
 
-boned = false
-
 conversation = 0
 eaten = false
+
+killed = false
 
 bang = function(e)
 	e:SetScreenColor( 0, 0, 0 )
@@ -50,8 +50,16 @@ bang = function(e)
 	transform:SetSize(48, 48)
 	e:AddComponent("CollisionComponent")
 	e:GetCC():SetType("gravemonster")
+
 	e:AddComponent("FileComponent")
 	file = e:GetFC()
+
+	file:OpenFile("Quest.save")
+	if file:GetVariable("Killed") == "true" then
+		killed = true
+	else
+		killed = false
+	end
 
 	--DIALOGUE stuff
 	e:AddComponent("DialogComponent")
@@ -91,11 +99,11 @@ end
 
 display = function(e)
 	if graphic then
-		if color == "Blue" then
+		if color == "Blue" and killed == true then
 			graphic:SetColor(50,50,255)
 			graphic:Display(transform.x, transform.y)
 		end
-		if color == "White" and alive == true then
+		if color == "White" and killed == true then
 			graphic:SetColor(255,255,255)
 			graphic:Display(transform.x, transform.y)
 		end
@@ -109,7 +117,7 @@ onKeyRelease = function(e,k)
 end
 
 recieveMessage = function(e, message)
-	if message == "Dialogue" then
+	if message == "Dialogue" and killed == true then
 		if e:GetDC() and conversation < 1 then
 			conversation = conversation + 1
 			dialogue:OpenDialogue()

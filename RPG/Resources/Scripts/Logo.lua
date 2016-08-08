@@ -16,6 +16,13 @@ bang = function(e)
 
 	e:AddComponent("FileComponent")
 	file = e:GetFC()
+	file:OpenFile("Game.save")
+	file:SetVariable("Warp", "1")
+	file:SetVariable("Color", "White")
+	file:WriteFile()
+	file:OpenFile("Quest.save")
+	file:SetVariable("SharkBelly", "not")
+	file:WriteFile()
 
 	timer =  0
 end
@@ -23,7 +30,7 @@ end
 update = function(e)
 	timer = timer + e:GetDeltaTime()
 	if timer > 10 then
-		e:Message("Map", "ArcadeGame.json")
+		e:Message("Map", "Box.json")
 	end
 end
 
@@ -34,15 +41,5 @@ display = function(e)
 end
 
 onKeyPress = function(e,k)
-	if k == "q" then
-		e:Message("Map", "Graveyard.json")
-		file:OpenFile("Game.save")
-		file:SetVariable("Warp", "1")
-		file:WriteFile()
-	else
-		e:Message("Map", "Intro.json")
-	--	file:OpenFile("Game.save")
-	--	file:SetVariable("Color", "White")
-	--	file:WriteFile()
-	end
+		e:Message("Map", "Clones.json")
 end

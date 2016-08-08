@@ -21,7 +21,7 @@ bang = function(e)
 	transform = e:GetTransform()
 	transform:SetSize(8, 16)
 	e:AddComponent("CollisionComponent")
-	e:GetCC():SetType("Bachelor")
+	e:GetCC():SetType("Groom")
 
 	--DIALOGUE stuff
 	e:AddComponent("DialogComponent")
@@ -45,6 +45,10 @@ display = function(e)
 		end
 		if color == "White" and alive == true then
 			graphic:SetColor(255,255,255)
+			graphic:Display(transform.x, transform.y)
+		end
+		if color == "Red" then
+			graphic:SetColor(255,50,50)
 			graphic:Display(transform.x, transform.y)
 		end
 	end
@@ -76,7 +80,12 @@ recieveSignal = function(e, signal)
 	end
 	if signal == "White" then
 		color = "White"
+		e:GetCC():SetType("Bride")
 	elseif signal == "Blue" then
 		color = "Blue"
+		e:GetCC():SetType("")
+	elseif signal == "Red" then
+		color = "Red"
+		e:GetCC():SetType("Bride")
 	end
 end

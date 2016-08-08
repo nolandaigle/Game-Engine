@@ -86,6 +86,7 @@ update = function(e)
 
 	if health < 1 then
 		alive = false
+		e:Signal("Killed")
 	end
 end
 
@@ -93,7 +94,7 @@ display = function(e)
 	if graphic then
 		if color == "Blue" then
 			graphic:SetColor(50,50,255)
-		--	graphic:Display(transform.x, transform.y)
+			graphic:Display(transform.x, transform.y)
 		end
 		if color == "White" and alive == true then
 			graphic:SetColor(255,255,255)
@@ -111,6 +112,7 @@ end
 recieveMessage = function(e, message)
 	if message == "Dialogue" then
 		if e:GetDC() then
+
 			if boned == false and color == "White" then
 
 				conversation = conversation + 1
@@ -144,6 +146,18 @@ recieveMessage = function(e, message)
 					conversation = 0
 				end
 			else
+				if color == "Blue" then
+					conversation = conversation + 1
+					if conversation == 1 then
+						dialogue:Clear()
+						dialogue:PushMessage("The dog doesn't\n seem to notice your\n presence.")
+					end
+					if conversation == 2 then
+						conversation = 0
+						dialogue:HideBox()
+					end
+				end
+
 				dialogue:OpenDialogue()
 			end
 		end
@@ -164,5 +178,7 @@ recieveSignal = function(e, signal)
 		color = "White"
 	elseif signal == "Blue" then
 		color = "Blue"
+	elseif signal == "Red" then
+		color = "Red"
 	end
 end

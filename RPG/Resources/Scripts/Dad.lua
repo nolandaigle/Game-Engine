@@ -75,6 +75,7 @@ recieveMessage = function(e, message)
 			if conversation == 8 then
 				file:OpenFile("Quest.save")
 				file:SetVariable("Mom", "reconciled")
+				file:SetVariable("Creator", "returned")
 				file:WriteFile()
 				dialogue:Clear()
 				dialogue:PushMessage("We both love you\n very much.")

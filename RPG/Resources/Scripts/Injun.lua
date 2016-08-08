@@ -71,7 +71,7 @@ update = function(e)
 
 	if health < 1 and alive == true then
 		dialogue:Clear()
-		dialogue:PushMessage("100 Points!")
+		dialogue:PushMessage("Hundred Points!")
 		dialogue:OpenDialogue()
 		alive = false
 	end
