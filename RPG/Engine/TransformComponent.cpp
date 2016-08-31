@@ -54,3 +54,29 @@ void TransformComponent::SetSize( int _w, int _h )
     hCPoint[2] = sf::Vector2f( w, 2 ); // RIGHT top
     hCPoint[3] = sf::Vector2f(w, h-2); // RIGHT bottom
 }
+
+void TransformComponent::Display(bool pointed)
+{
+    if ( pointed )
+    {
+    for ( int i = 0; i < 4; i++)
+    {
+        sf::RectangleShape hRect(sf::Vector2f(1, 1));
+        hRect.setPosition(sf::Vector2f( x+hCPoint[i].x, y+hCPoint[i].y));
+        hRect.setFillColor(sf::Color::Yellow);
+        system->GetWindow()->draw(hRect);
+        
+        sf::RectangleShape vRect(sf::Vector2f(1, 1));
+        vRect.setPosition(sf::Vector2f(x+ vCPoint[i].x, y+ vCPoint[i].y));
+        vRect.setFillColor(sf::Color::Red);
+        system->GetWindow()->draw(vRect);
+    }
+    }
+    else
+    {
+        sf::RectangleShape rect(sf::Vector2f(w, h));
+        rect.setPosition(sf::Vector2f( x, y));
+        rect.setFillColor(sf::Color::Green);
+        system->GetWindow()->draw(rect);
+    }
+}

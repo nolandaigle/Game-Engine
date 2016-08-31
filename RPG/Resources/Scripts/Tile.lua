@@ -43,10 +43,14 @@ bang = function(e, i)
 		collider:SetTransform(e:GetTransform())
 		collider:SetType("Block")
 	end
+
 end
 
 display = function(e)
 	if graphic then
+		if e:GetCC():CollidingType("all") == "player" then
+			transform:Display(false)
+		end
         graphic:Display(e:GetTransform().x,e:GetTransform().y)
 	end 
 end

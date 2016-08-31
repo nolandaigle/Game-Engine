@@ -415,7 +415,7 @@ void Entity::LoadScript(char* filename)
     .addFunction("GetEntityName", &Component::GetEntityName)
     .addFunction("CenterView", &TransformComponent::CenterView)
     .addFunction("SetSize", &TransformComponent::SetSize )
-    
+    .addFunction("Display", &TransformComponent::Display )
     .addData("x", &TransformComponent::x)
     .addData("y", &TransformComponent::y)
     .endClass()

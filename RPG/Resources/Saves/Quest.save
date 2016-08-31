@@ -1,8 +1,8 @@
 {
-   "Bone" : "collected",
-   "Creator" : "returned",
+   "Bone" : "not",
+   "Creator" : "missing",
    "Killed" : "true",
-   "Mom" : "done",
-   "Priest" : "tripped",
+   "Mom" : "not",
+   "Priest" : "not",
    "SharkBelly" : "not"
 }

@@ -244,6 +244,8 @@ display = function(e)
 			graphic:SetColor(255,50,50)
 		end
 		graphic:Display(math.floor(transform.x), math.floor(transform.y))
+
+		transform:Display(true)
 	end
 end
 

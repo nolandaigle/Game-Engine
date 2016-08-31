@@ -22,6 +22,7 @@ public:
     ~TransformComponent();
     void CenterView();
     void SetSize( int w, int h );
+    void Display(bool pointed);
     
     float x, y, w, h;
     sf::Vector2f hCPoint[4];
