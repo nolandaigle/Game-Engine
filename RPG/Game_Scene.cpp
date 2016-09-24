@@ -15,7 +15,9 @@ Game_Scene::Game_Scene(System *_system) : Scene(_system)
     eL->SetSystem(system);
     
     overlay = sf::RectangleShape(sf::Vector2f(system->GetWindow()->getSize().x,system->GetWindow()->getSize().y));
-    fade = 255;
+    fadein = 255;
+    fadeout = 0;
+    file = "";
 }
 
 void Game_Scene::Bang()
@@ -57,7 +59,6 @@ void Game_Scene::Turn()
         if ( eL->GetNextMap() != "" )
         {
             ChangeMap("Resources/Maps/"+eL->GetNextMap() );
-            eL->SetMap(map);
         }
     }
 }
@@ -70,10 +71,34 @@ void Game_Scene::Display()
     //Run System's Display functions
     system->Display();
     
-    if (fade > 0 )
+    if ( leaving == true )
     {
-        fade = fade - 15;
-        overlay.setFillColor(sf::Color(0, 0, 0, fade));
+        if ( fadeout < 255 )
+        {
+            fadeout = fadeout + 15;
+            overlay.setFillColor(sf::Color(0, 0, 0, fadeout));
+            system->GetWindow()->draw(overlay);
+        }
+        else
+        {
+            leaving = false;
+            eL->SetNextMap("");
+            eL->Clear();
+            delete map;
+            map = NULL;
+            map = new Map(system);
+            map->Load(resourcePath()+file);
+            eL->Bang();
+            eL->Sort("Layer");
+            eL->SetMap(map);
+            fadein = 255;
+        }
+    }
+    
+    if (fadein > 0 )
+    {
+        fadein = fadein - 15;
+        overlay.setFillColor(sf::Color(0, 0, 0, fadein));
         system->GetWindow()->draw(overlay);
     }
 }
@@ -91,15 +116,12 @@ void Game_Scene::Collapse()
     }
 }
 
-void Game_Scene::ChangeMap(std::string file)
+void Game_Scene::ChangeMap(std::string _file)
 {
-    eL->SetNextMap("");
-    eL->Clear();
-    delete map;
-    map = NULL;
-    map = new Map(system);
-    map->Load(resourcePath()+file);
-    eL->Bang();
-    eL->Sort("Layer");
-    fade = 255;
+    file = _file;
+    if ( leaving == false )
+    {
+        leaving = true;
+        fadeout = 0;
+    }
 }

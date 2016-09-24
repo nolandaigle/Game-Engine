@@ -19,9 +19,7 @@ FileComponent::~FileComponent()
 
 void FileComponent::OpenFile(std::string fi)
 {
-    std::cout<<GetEntityName()<<std::endl;
     filename = resourcePath()+"Resources/Saves/"+fi;
-    std::cout<<filename<<std::endl;
     file.clear();
     std::ifstream ifstr(filename);
     ifstr>>file;

@@ -41,9 +41,5 @@ display = function(e)
 end
 
 onKeyPress = function(e,k)
-	if k == "e" then
-		e:Message("Map", "DogPark.json")
-	else
-		e:Message("Map", "Clones.json")
-	end
+	e:Message("Map", "Clones.json")
 end

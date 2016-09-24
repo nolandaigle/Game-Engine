@@ -39,7 +39,7 @@ bang = function(e)
 	dialogue = e:GetDC()
 	dialogue:ShowGraphic(false)
 	dialogue:SetVoice("uh.wav")
-	if boned == "not" then
+	if boned == "not" or boned == "met" then
 		dialogue:PushMessage("I'm missing one bone...\n My bones are all I have!")
 		dialogue:PushMessage("Where could it be...?\n I have no friends! I need\n my bones!")
 	elseif boned == "collected" then
@@ -96,6 +96,10 @@ display = function(e)
 			graphic:Display(transform.x, transform.y)
 		end
 	end
+
+	if e:GetCC():CollidingType("all") == "player" then
+		transform:Display(true)
+	end
 end
 
 onKeyPress = function(e,k)
@@ -115,6 +119,10 @@ recieveMessage = function(e, message)
 				dialogue:Clear()
 				dialogue:PushMessage("At least I have my bone back.")
 				dialogue:PushMessage("...")
+			else
+				file:OpenFile("Quest.save")
+				file:SetVariable("Bone", "met")
+				file:WriteFile()
 			end
 		end
 	end

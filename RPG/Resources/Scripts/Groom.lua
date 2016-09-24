@@ -1,6 +1,7 @@
 color = "White"
 alive = true
 health = 5
+tdisplay = false
 
 bang = function(e)
 	e:AddComponent("GraphicComponent")
@@ -52,6 +53,11 @@ display = function(e)
 			graphic:Display(transform.x, transform.y)
 		end
 	end
+
+	if tdisplay == true then
+		transform:Display(true)
+		tdisplay = false
+	end
 end
 
 onKeyPress = function(e,k)
@@ -73,6 +79,9 @@ end
 
 recieveSignal = function(e, signal)
 	charMove = signal
+	if message == "PlayerTouch" then
+		tdisplay = true
+	end
 	if signal == "BreakConv" then
 		if e:GetDC() then
 			dialogue:HideBox()

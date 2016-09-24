@@ -34,8 +34,15 @@ bang = function(e)
 	e:AddComponent("DialogComponent")
 	dialogue = e:GetDC()
 	dialogue:ShowGraphic(false)
-	dialogue:SetVoice("woo.wav")
-	dialogue:PushMessage("...")
+	dialogue:SetVoice("uh.wav")
+	
+	d = math.random(0, 5)
+
+	if d < 5 then
+		dialogue:PushMessage("...")
+	elseif d == 5 then
+		dialogue:PushMessage("There are other worlds\n out there...")
+	end
 
 	startx = transform.x
 	starty = transform.y
@@ -81,6 +88,10 @@ display = function(e)
 			graphic:SetColor(255,255,255)
 			graphic:Display(transform.x, transform.y)
 		end
+	end
+
+	if e:GetCC():CollidingType("all") == "player" then
+		transform:Display(true)
 	end
 end
 

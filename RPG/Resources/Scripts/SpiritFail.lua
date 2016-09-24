@@ -50,9 +50,9 @@ display = function(e)
 		end
 	end
 
-	if e:GetCC():CollidingType("all") == "player" then
-		transform:Display(true)
-	end
+		if e:GetCC():CollidingType("all") == "player" then
+			transform:Display(true)
+		end
 end
 
 onKeyPress = function(e,k)

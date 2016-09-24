@@ -1,6 +1,7 @@
 color = "White"
 alive = true
 health = 5
+tdisplay = false
 
 conversation = 0
 
@@ -54,6 +55,11 @@ display = function(e)
 			graphic:SetColor(255,255,255)
 			graphic:Display(transform.x, transform.y)
 		end
+
+		if tdisplay == true then
+			transform:Display(true)
+			tdisplay = false
+		end
 	end
 end
 
@@ -64,6 +70,9 @@ onKeyRelease = function(e,k)
 end
 
 recieveMessage = function(e, message)
+	if message == "PlayerTouch" then
+		tdisplay = true
+	end
 	if message == "Dialogue" then
 		if e:GetDC() then
 			dialogue:OpenDialogue()

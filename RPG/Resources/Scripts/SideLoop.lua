@@ -69,15 +69,15 @@ recieveSignal = function(e, signal)
 		file:WriteFile()
 	end
 	if signal == "Right" then
-		e:Message("Map", "Right.json")
+		e:Message("Map", "SideLoop.json")
 		file:OpenFile("Game.save")
-		file:SetVariable("Warp", "1")
+		file:SetVariable("Warp", "4")
 		file:WriteFile()
 	end
 	if signal == "Left" then
-		e:Message("Map", "Left.json")
+		e:Message("Map", "SideLoop.json")
 		file:OpenFile("Game.save")
-		file:SetVariable("Player-exit", "Ray")
+		file:SetVariable("Warp", "3")
 		file:WriteFile()
 	end
 end

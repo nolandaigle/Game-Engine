@@ -1,5 +1,5 @@
 color = "White"
-alive = true
+alive = false
 health = 1
 timer = 0
 
@@ -43,6 +43,7 @@ bang = function(e)
 	if tripped == false then
 		dialogue:PushMessage("Let nothing trouble you,\n let nothing frighten you.\nAll things are passing;\n God never changes.\nPatience obtains all\n things.")
 		dialogue:PushMessage("He who possesses God\n lacks  nothing:\nGod alone suffices.")
+		dialogue:PushMessage(" Yes, it's true.\nI made my own tombstone.")
 	elseif tripped == true then
 		dialogue:PushMessage("Pretty trippy, huh.")
 	end
@@ -66,10 +67,20 @@ display = function(e)
 			graphic:SetColor(50,50,255)
 
 			graphic:Display(transform.x, transform.y)
+
+			if tdisplay == true then
+			transform:Display(true)
+			tdisplay = false
+		end
 		end
 		if color == "White" and alive == true then
 			graphic:SetColor(255,255,255)
 			graphic:Display(transform.x, transform.y)
+
+			if tdisplay == true then
+			transform:Display(true)
+			tdisplay = false
+		end
 		end
 	end
 end
@@ -81,6 +92,9 @@ onKeyRelease = function(e,k)
 end
 
 recieveMessage = function(e, message)
+if message == "PlayerTouch" then
+		tdisplay = true
+	end
 	if message == "Dialogue" then
 		if e:GetDC() then
 			conversation = conversation + 1
@@ -96,7 +110,7 @@ recieveMessage = function(e, message)
 				conversation = 0
 			end
 
-			if conversation == 3 then
+			if conversation == 4 then
 				conversation = 0
 
 				file:OpenFile("Quest.save")

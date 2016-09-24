@@ -15,6 +15,8 @@ eaten = false
 
 killed = false
 
+tdisplay = false
+
 bang = function(e)
 	e:SetScreenColor( 0, 0, 0 )
 	e:AddComponent("GraphicComponent")
@@ -102,10 +104,11 @@ display = function(e)
 		if color == "Blue" and killed == true then
 			graphic:SetColor(50,50,255)
 			graphic:Display(transform.x, transform.y)
-		end
-		if color == "White" and killed == true then
-			graphic:SetColor(255,255,255)
-			graphic:Display(transform.x, transform.y)
+
+			if tdisplay == true then
+				tdisplay = false
+				transform:Display(true)
+			end
 		end
 	end
 end
@@ -117,6 +120,9 @@ onKeyRelease = function(e,k)
 end
 
 recieveMessage = function(e, message)
+	if message == "PlayerTouch" then
+		tdisplay = true
+	end
 	if message == "Dialogue" and killed == true then
 		if e:GetDC() and conversation < 1 then
 			conversation = conversation + 1

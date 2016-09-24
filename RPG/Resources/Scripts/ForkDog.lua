@@ -32,9 +32,9 @@ end
 
 recieveSignal = function(e, signal)
 	if signal == "Left" then
-		e:Message("Map", "ForkDog.json")
+		e:Message("Map", "Ray2.json")
 		file:OpenFile("Game.save")
-		file:SetVariable("Warp", "2")
+		file:SetVariable("Warp", "1")
 		file:WriteFile()
 	elseif signal == "Right" then
 		e:Message("Map", "ForkFam.json")

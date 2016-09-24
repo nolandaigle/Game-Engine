@@ -2,7 +2,7 @@ xvel = 0.0
 yvel = 0.0
 speed = 2.0
 acceleration = .5
-recoil = 4
+recoil = 3.5
 facing = 1
 
 bullets = {}
@@ -231,6 +231,11 @@ update = function(e)
 			end
 		end
 	end
+
+	other = e:GetCC():CollidingName("all")
+	if other ~= "" then
+		e:Message(other, "PlayerTouch")
+	end
 end
 
 display = function(e)
@@ -244,8 +249,6 @@ display = function(e)
 			graphic:SetColor(255,50,50)
 		end
 		graphic:Display(math.floor(transform.x), math.floor(transform.y))
-
-		transform:Display(true)
 	end
 end
 

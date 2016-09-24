@@ -1,11 +1,15 @@
 xvel = 0
 yvel = 0
-speed = 3
+speed = 4
 color = "white"
 alive = true
 
+timer = 0
+
 bang = function(e, i)
 	xvel = tonumber(i)*speed
+
+	timer = 0
 
 	if tonumber(i) == 0 then
 		xvel = 0
@@ -21,7 +25,7 @@ bang = function(e, i)
 	graphic:Play("Shooting")
 	e:AddComponent("TransformComponent")
 	transform = e:GetTransform()
-	transform:SetSize(8, 8)
+	transform:SetSize(2, 2)
 	e:AddComponent("CollisionComponent")
 	e:GetCC():SetType("bullet")
 	e:AddComponent("MapComponent")
@@ -29,6 +33,8 @@ bang = function(e, i)
 end
 
 update = function(e)
+
+	timer = timer + e:GetDeltaTime()
 	
 	if transform.x > map:GetWidth() then
 		transform.x = 0
@@ -39,7 +45,8 @@ update = function(e)
 		if other ~= "" then
 			if e:GetEntity(other):GetCC():GetType() ~= "" then
 				e:Message(other, "bullet")
-                alive = falsezz
+				e:GetCC():SetType("")
+                alive = false
 			end
 		end
 	end

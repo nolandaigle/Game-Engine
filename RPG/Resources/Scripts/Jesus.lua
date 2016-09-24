@@ -1,6 +1,7 @@
 color = "White"
 alive = true
 health = 5
+tdisplay = false
 
 bang = function(e)
 	e:SetScreenColor( 0, 0, 0 )
@@ -48,10 +49,20 @@ display = function(e)
 		if color == "Blue" then
 			graphic:SetColor(50,50,255)
 			graphic:Display(transform.x, transform.y)
+
+			if tdisplay == true then
+			transform:Display(true)
+			tdisplay = false
+			end
 		end
 		if color == "White" and alive == true then
 			graphic:SetColor(255,255,255)
 			graphic:Display(transform.x, transform.y)
+
+			if tdisplay == true then
+			transform:Display(true)
+			tdisplay = false
+		end
 		end
 	end
 end
@@ -70,6 +81,9 @@ recieveMessage = function(e, message)
 	end
 	if message == "bullet" then
 		health = health - 1
+	end
+	if message == "PlayerTouch" then
+		tdisplay = true
 	end
 end
 

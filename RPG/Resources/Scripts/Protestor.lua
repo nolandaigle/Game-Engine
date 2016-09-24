@@ -5,6 +5,7 @@ timer = 0
 
 x = 0.0
 y = 0.0
+tdisplay = false
 
 
 bang = function(e)
@@ -103,6 +104,11 @@ display = function(e)
 			graphic:Display(transform.x, transform.y)
 		end
 	end
+
+	if tdisplay == true then
+			transform:Display(true)
+			tdisplay = false
+		end
 end
 
 onKeyPress = function(e,k)
@@ -112,6 +118,9 @@ onKeyRelease = function(e,k)
 end
 
 recieveMessage = function(e, message)
+if message == "PlayerTouch" then
+		tdisplay = true
+	end
 	if message == "Dialogue" then
 		if e:GetDC() then
 			dialogue:OpenDialogue()

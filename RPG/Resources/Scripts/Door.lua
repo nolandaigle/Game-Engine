@@ -20,7 +20,6 @@ bang = function(e)
 	file = e:GetFC()
 	file:OpenFile("Sokoban.save")
 	switchNum = tonumber(file:GetVariable("Switch-number"))
-	print(switchNum)
 end
 
 update = function(e)
@@ -28,7 +27,18 @@ end
 
 display = function(e)
 	if graphic and open == false then
-		graphic:Display(transform.x, transform.y)
+		if color == "Blue" then
+			graphic:SetColor(50,50,255)
+			graphic:Display(transform.x, transform.y)
+		end
+		if color == "White" and alive == true then
+			graphic:SetColor(255,255,255)
+			graphic:Display(transform.x, transform.y)
+		end
+		if color == "Red" and alive == true then
+			graphic:SetColor(255,50,50)
+			graphic:Display(transform.x, transform.y)
+		end
 	end
 end
 
@@ -37,6 +47,8 @@ recieveSignal = function(e, signal)
 		color = "White"
 	elseif signal == "Blue" then
 		color = "Blue"
+	elseif signal == "Red" then
+		color = "Red"
 	end
 
 	if signal == "reset" then

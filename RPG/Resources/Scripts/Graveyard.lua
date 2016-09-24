@@ -16,6 +16,10 @@ bang = function(e)
 		e:Message("2", "Create" )
 	elseif enterWarp == "3" then
 		e:Message("3", "Create" )
+	elseif enterWarp == "4" then
+		e:Message("4", "Create" )
+	elseif enterWarp == "5" then
+		e:Message("5", "Create" )
 	end
 
 	e:AddComponent("ScreenComponent")
@@ -28,9 +32,14 @@ end
 
 recieveSignal = function(e, signal)
 	if signal == "Left" then
-		e:Message("Map", "Cry.json")
+		e:Message("Map", "GraveHall.json")
 		file:OpenFile("Game.save")
 		file:SetVariable("Warp", "2")
+		file:WriteFile()
+	elseif signal == "Top" then
+		e:Message("Map", "Breakdown.json")
+		file:OpenFile("Game.save")
+		file:SetVariable("Warp", "1")
 		file:WriteFile()
 	elseif signal == "Right" then
 		e:Message("Map", "Forest1.json")

@@ -113,6 +113,10 @@ display = function(e)
 			graphic:Display(transform.x, transform.y)
 		end
 	end
+
+	if e:GetCC():CollidingType("all") == "player" and color == "White" then
+		transform:Display(true)
+	end
 end
 
 onKeyPress = function(e,k)

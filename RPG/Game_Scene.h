@@ -19,7 +19,10 @@ private:
     Map *map;
     sf::RectangleShape overlay;
     float fps;
-    int fade;
+    int fadein;
+    int fadeout;
+    bool leaving;
+    std::string file;
 public:
     Game_Scene(System *_system);
     virtual void Bang();
@@ -28,7 +31,7 @@ public:
     virtual void Display();
     virtual void Collapse();
     
-    void ChangeMap(std::string file);
+    void ChangeMap(std::string _file);
 };
 
 #endif /* defined(__RPG__Title_Scene__) */

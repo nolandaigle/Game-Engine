@@ -33,10 +33,13 @@ update = function(e)
 	player = e:GetEntity("Player")
 
 	if player:GetTransform().x < 0 then
-		player:GetTransform().x = map:GetWidth() - 16
+		e:Message("Map", "Graveyard.json")
+			file:OpenFile("Game.save")
+			file:SetVariable("Warp", "4")
+			file:WriteFile()
 	elseif player:GetTransform().x > map:GetWidth() then
 		if solved == true then
-			e:Message("Map", "ForkDog.json")
+			e:Message("Map", "Summary.json")
 			file:OpenFile("Game.save")
 			file:SetVariable("Warp", "1")
 			file:WriteFile()

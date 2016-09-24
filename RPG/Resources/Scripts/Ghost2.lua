@@ -10,6 +10,8 @@ starty = 0
 targetx = 0
 targety = 0
 
+tdisplay = false
+
 bang = function(e)
 	e:SetScreenColor( 0, 0, 0 )
 	e:AddComponent("GraphicComponent")
@@ -62,8 +64,8 @@ update = function(e)
 		targety = y
 	end
 
-	x = x + e:Lerp(x, targetx, 0.01)
-	y = y + e:Lerp(y, targety, 0.01)
+	x = x + math.floor(e:Lerp(x, targetx, 0.01))
+	y = y + math.floor(e:Lerp(y, targety, 0.01))
 
 	transform.x = x
 	transform.y = y
@@ -97,14 +99,28 @@ display = function(e)
 			graphic:SetColor(50,50,255)
 
 			graphic:Display(transform.x, transform.y)
+
+			if tdisplay == true then
+				transform:Display(true)
+				tdisplay = false
+			end
 		end
 		if color == "White" and alive == true then
 			graphic:SetColor(255,255,255)
 			graphic:Display(transform.x, transform.y)
+			if tdisplay == true then
+				transform:Display(true)
+				tdisplay = false
+			end
 		end
 		if color == "Red" and alive == true then
 			graphic:SetColor(255,50,50)
 			graphic:Display(transform.x, transform.y)
+
+			if tdisplay == true then
+				transform:Display(true)
+				tdisplay = false
+			end
 		end
 	end
 end
@@ -116,6 +132,9 @@ onKeyRelease = function(e,k)
 end
 
 recieveMessage = function(e, message)
+	if message == "PlayerTouch" then
+		tdisplay = true
+	end
 	if message == "Dialogue" then
 		if e:GetDC() then
 			dialogue:OpenDialogue()

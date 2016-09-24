@@ -1,7 +1,6 @@
 color = "White"
 alive = true
 health = 3
-timer = 0
 
 direction = "right"
 going = "down"
@@ -96,10 +95,6 @@ end
 
 display = function(e)
 	if graphic then
-		if color == "Blue" then
-			graphic:SetColor(50,50,255)
-			graphic:Display(transform.x, transform.y)
-		end
 		if color == "White" and alive == true then
 			graphic:SetColor(255,255,255)
 			graphic:Display(transform.x, transform.y)
@@ -129,7 +124,5 @@ recieveSignal = function(e, signal)
 	end
 	if signal == "White" then
 		color = "White"
-	elseif signal == "Blue" then
-		color = "Blue"
 	end
 end

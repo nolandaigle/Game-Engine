@@ -46,6 +46,10 @@ display = function(e)
 	if graphic then
 		graphic:Display(transform.x, transform.y)
 	end
+
+	if e:GetCC():CollidingType("all") == "player" then
+		transform:Display(true)
+	end
 end
 
 onKeyPress = function(e,k)

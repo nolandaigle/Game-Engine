@@ -33,9 +33,12 @@ end
 
 recieveSignal = function(e, signal)
 	if signal == "Left" then
-		e:GetEntity("Player"):GetTransform().x = map:GetWidth()
+		e:Message("Map", "Sokoban1.json")
+		file:OpenFile("Game.save")
+		file:SetVariable("Warp", "1")
+		file:WriteFile()
 	elseif signal == "Right" then
-		e:Message("Map", "HippieFlip.json")
+		e:Message("Map", "ForkDog.json")
 		file:OpenFile("Game.save")
 		file:SetVariable("Warp", "1")
 		file:WriteFile()

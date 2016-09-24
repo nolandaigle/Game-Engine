@@ -44,7 +44,7 @@ recieveSignal = function(e, signal)
 		file:WriteFile()
 	end
 	if signal == "Right" then
-		e:Message("Map", "Graveyard.json")
+		e:Message("Map", "GraveHall.json")
 		file:OpenFile("Game.save")
 		file:SetVariable("Warp", "1")
 		file:WriteFile()

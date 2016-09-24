@@ -1,6 +1,7 @@
 color = "White"
 alive = true
 health = 5
+tdisplay = false
 
 bang = function(e)
 	e:AddComponent("MapComponent")
@@ -58,11 +59,19 @@ display = function(e)
 		if color == "White" and alive == true then
 			graphic:SetColor(255,255,255)
 			graphic:Display(transform.x, transform.y)
+
+			if tdisplay == true then
+			transform:Display(true)
+			tdisplay = false
+		end
 		end
 	end
 end
 
 recieveMessage = function(e, message)
+	if message == "PlayerTouch" then
+		tdisplay = true
+	end
 	if message == "Dialogue" then
 		if e:GetDC() then
 			dialogue:OpenDialogue()

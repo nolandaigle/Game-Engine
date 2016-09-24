@@ -27,12 +27,12 @@ end
 
 recieveSignal = function(e, signal)
 	if signal == "Left" then
-		e:Message("Map", "Forest1.json")
+		e:Message("Map", "Graveyard.json")
 		file:OpenFile("Game.save")
-		file:SetVariable("Warp", "3")
+		file:SetVariable("Warp", "4")
 		file:WriteFile()
 	elseif signal == "Right" then
-		e:Message("Map", "Forest1.json")
+		e:Message("Map", "HippieFlip.json")
 		file:OpenFile("Game.save")
 		file:SetVariable("Warp", "1")
 		file:WriteFile()
