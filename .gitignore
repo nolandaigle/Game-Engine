@@ -32,6 +32,7 @@ RPG/Resources/Fonts/
 
 *.vertex
 
+<<<<<<< HEAD
 *.json
 
 *.lua
@@ -49,3 +50,10 @@ RPG/Resources/
 *.json
 
 *.lua
+=======
+*.lua
+
+*.save
+
+*.m4a
+>>>>>>> origin/master
