@@ -40,3 +40,9 @@ RPG/Resources/Fonts/
 *.ttf
 
 *.vertex
+
+*.lua
+
+*.save
+
+*.m4a
