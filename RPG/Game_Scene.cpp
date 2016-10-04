@@ -16,7 +16,8 @@ Game_Scene::Game_Scene(System *_system) : Scene(_system)
     
     overlay = sf::RectangleShape(sf::Vector2f(system->GetWindow()->getSize().x,system->GetWindow()->getSize().y));
     fadein = 255;
-    fadeout = 0;
+    fadeout = 256;
+    leaving = false;
     file = "";
 }
 
@@ -91,6 +92,7 @@ void Game_Scene::Display()
             eL->Bang();
             eL->Sort("Layer");
             eL->SetMap(map);
+            fadeout = 256;
             fadein = 255;
         }
     }

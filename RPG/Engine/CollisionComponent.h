@@ -23,6 +23,8 @@ public:
     TransformComponent *transform;
     std::string CollidingType(std::string side);
     std::string CollidingName(std::string side);
+    std::string CollidingTTN(std::string side, std::string _type);
+
     bool TransformBoxColliding( TransformComponent *t1, TransformComponent *t2 );
     std::string TransformColliding( TransformComponent *t1, TransformComponent *t2 );
     std::string GetType();

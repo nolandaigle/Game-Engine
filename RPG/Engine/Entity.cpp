@@ -428,6 +428,7 @@ void Entity::LoadScript(char* filename)
     .addFunction("GetType", &CollisionComponent::GetType)
     .addFunction("SetTransform", &CollisionComponent::SetTransform)
     .addFunction("CollidingType", &CollisionComponent::CollidingType)
+    .addFunction("CollidingTTN", &CollisionComponent::CollidingTTN)
     .addFunction("CollidingName", &CollisionComponent::CollidingName)
     .endClass()
     

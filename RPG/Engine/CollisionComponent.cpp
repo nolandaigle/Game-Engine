@@ -109,6 +109,36 @@ std::string CollisionComponent::TransformColliding( TransformComponent *t1, Tran
     return "none";
 }
 
+std::string CollisionComponent::CollidingTTN(std::string side, std::string _type)
+{
+    int e = 0;
+    TransformComponent *transform1;
+    for (std::vector<CollisionComponent*>::iterator it = EntityLibrary::instance()->cList.begin() ; it != EntityLibrary::instance()->cList.end(); ++it)
+    {
+        transform1 = (*it)->transform;
+        
+        if ( transform1 )
+        {
+            if ( transform != transform1 )
+            {
+                if ( side == "all" )
+                {
+                    if ( TransformColliding(transform, transform1) != "none" && (*it)->GetType() == _type )
+                        return (*it)->GetEntityName();
+                }
+                else
+                {
+                    if ( TransformColliding(transform, transform1) == side && (*it)->GetType() == _type )
+                        return (*it)->GetEntityName();
+                }
+            }
+        }
+        
+    }
+    return "";
+}
+
+
 std::string CollisionComponent::CollidingType(std::string side)
 {
     int e = 0;
