@@ -1,15 +1,6 @@
 
-RPF/Engine/LuaBridge/
-
-RPG/cute_image.jpg
-
+RPG/Engine/LuaBridge/
 *.jpg
-
-RPG/cute_image.jpg
-
-RPG/Resources/Sound/
-
-RPG/Resources/icon.png
 
 *.wav
 
@@ -52,3 +43,9 @@ RPG/Resources/Fonts/
 *.frag
 
 *.glsl
+
+RPG/Resources/
+
+*.json
+
+*.lua
