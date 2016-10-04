@@ -1,8 +1,8 @@
 {
    "Color" : "White",
    "Player-exit" : "Bottom",
-   "Player-x" : "944",
-   "Player-y" : "-2",
+   "Player-x" : "298",
+   "Player-y" : "192",
    "Warp" : "1",
    "unlocked" : "true"
 }

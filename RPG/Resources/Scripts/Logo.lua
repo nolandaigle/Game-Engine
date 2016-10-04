@@ -12,24 +12,14 @@ bang = function(e)
 	e:AddComponent("SoundComponent")
 	sound = e:GetSC()
 	sound:Load("Resources/Sound/Startup.wav", "Startup")
-	sound:Play("Startup")
-
-	e:AddComponent("FileComponent")
-	file = e:GetFC()
-	file:OpenFile("Game.save")
-	file:SetVariable("Warp", "1")
-	file:SetVariable("Color", "White")
-	file:WriteFile()
-	file:OpenFile("Quest.save")
-	file:SetVariable("SharkBelly", "not")
-	file:WriteFile()
+	--sound:Play("Startup")
 
 	timer =  0
 end
 
 update = function(e)
 	timer = timer + e:GetDeltaTime()
-	if timer > 10 then
+	if timer > 5 then
 		e:Message("Map", "Box.json")
 	end
 end
@@ -41,5 +31,5 @@ display = function(e)
 end
 
 onKeyPress = function(e,k)
-	e:Message("Map", "Clones.json")
+	e:Message("Map", "Box.json")
 end
