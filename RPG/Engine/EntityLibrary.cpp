@@ -183,6 +183,21 @@ void EntityLibrary::Message(std::string entity, std::string message)
     //If you send a message to the entity "Map" then the message will be interpreted as the map you would like to change to
     if ( entity == "Map" )
         nextMap = message;
+    else if ( entity == "MapColor" )
+    {
+        if ( message == "White" )
+        {
+            system->SetScreenFillColor(255,255,255,0);
+        }
+        else if ( message == "Blue" )
+        {
+            system->SetScreenFillColor(0,0,255,100);
+        }
+        else if ( message == "Red" )
+        {
+            system->SetScreenFillColor(255,0,0,100);
+        }
+    }
     else if ( entity == "Pause" )
         system->Pause();
     else if ( entity == "Music" )
@@ -203,7 +218,9 @@ void EntityLibrary::Message(std::string entity, std::string message)
         if ( entities[entity] != NULL)
             entities[entity]->RecieveMessage(message);
         else
-            std::cout<<"Could not find entity"<<std::endl;
+        {
+            std::cout<<"Could not find entity '"<<entity<<"'"<<std::endl;
+        }
     }
 }
 

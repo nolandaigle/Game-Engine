@@ -44,6 +44,7 @@ Entity::Entity(int _x, int _y, System *_system, bool _updating )
     y = _y;
     
     updating = _updating;
+    displaying = true;
 }
 
 Entity::~Entity()
@@ -85,16 +86,12 @@ void Entity::LateTurn()
 
 void Entity::Display()
 {
-    //If the entity is updating, run its lua script
-    if (Updating())
+    //If the entity is displaying, run its lua script
+    if (Displaying())
     {
         LuaRef display = getGlobal(luaState, "display");
         if ( display )
             display(this);
-    }
-    else if (GetGC() != NULL && GetTransform() != NULL )
-    {
-        GetGC()->Display( GetTransform()->x, GetTransform()->y);
     }
 }
 
@@ -506,6 +503,7 @@ void Entity::LoadScript(char* filename)
     .addFunction("GetHeight", &MapComponent::GetHeight)
     .addFunction("GetName", &MapComponent::GetName)
     .addFunction("Multiply", &MapComponent::Multiply)
+    .addFunction("SetColor", &MapComponent::SetColor)
     .endClass()
     
     //    ScreenComponent
@@ -558,6 +556,7 @@ void Entity::LoadScript(char* filename)
     .addFunction("GetTransform", &Entity::GetTransform)
     .addFunction("Updating", &Entity::Updating)
     .addFunction("SetUpdate", &Entity::SetUpdate )
+    .addFunction("SetDisplay", &Entity::SetDisplay )
     .addFunction("Sleep", &Entity::Sleep )
     .addFunction("Round", &Entity::Round )
     .addFunction("Lerp", &Entity::Lerp)

@@ -41,6 +41,7 @@ private:
     int layer;
     int x, y;
     bool updating;
+    bool displaying;
     /* --- --- --- */
     
     //Key INFO
@@ -84,12 +85,15 @@ public:
     void SetMap(Map *_map);
     void SetLayer(int l);
     void SetUpdate(bool update) { updating = update; }
+    void SetDisplay(bool display) { displaying = display; }
+
     
     
     void AddComponent(std::string _component);
     
     //Get Functions
     bool Updating() { return updating; }
+    bool Displaying() { return displaying; }
     std::string GetPath();
     int GetLayer() { return layer; }
     std::string GetName() { return name; }

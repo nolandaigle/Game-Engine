@@ -58,6 +58,9 @@ private:
     float xvel, yvel;
     float shakeTimer;
     bool shaking;
+    
+    sf::RectangleShape screenFillColor;
+
 public:
     System();
     ~System();
@@ -112,6 +115,8 @@ public:
     
     void SetScreenColor(int r, int g, int b ) { screencolor = sf::Color( r, g, b ); }
     sf::Color GetScreenColor() { return screencolor; }
+    
+    void SetScreenFillColor(int r, int g, int b, int a ) { screenFillColor.setFillColor(sf::Color( r, g, b, a )); }
 };
 
 #endif /* defined(__RPG__System__) */

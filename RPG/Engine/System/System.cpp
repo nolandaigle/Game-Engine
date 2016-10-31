@@ -74,6 +74,10 @@ System::System()
     
     screencolor = sf::Color(253,244,235);
     
+    
+    screenFillColor = sf::RectangleShape(sf::Vector2f(960,480));
+    screenFillColor.setFillColor(sf::Color::Black);
+    
     //Debug stuff
     debugging = false;
     paused = false;
@@ -175,6 +179,9 @@ void System::Display()
     textbox.Update( GetView()->getCenter().x - GetView()->getSize().x/2,GetView()->getCenter().y - GetView()->getSize().y/2, DeltaTime() );
     //Display textbox
     textbox.Display(GetWindow());
+    
+    //screenFillColor.setPosition(GetView()->getCenter().x - GetView()->getSize().x/2, GetView()->getCenter().y - GetView()->getSize().y/2);
+   // GetWindow()->draw(screenFillColor);
     
     //Debug info
     if ( debugging == true )

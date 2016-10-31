@@ -11,6 +11,7 @@
 
 #include "TransformComponent.h"
 #include <string>
+#include "TileMap.hpp"
 
 class Entity;
 
@@ -21,11 +22,14 @@ private:
     System *system;
     int mapWidth, mapHeight;
     int tileWidth, tileHeight;
+    
 public:
     Map(System *_system);
     ~Map();
     
     std::vector<Entity*> tiles;
+    
+    TileMap tilemap[4];
     
     void Load(std::string _filename);
     void Clear();
@@ -34,6 +38,8 @@ public:
     int GetTileWidth() { return tileWidth; }
     int GetTileHeight() { return tileHeight; }
     std::string GetName() { return filename; }
+    
+    void SetColor(int r, int g, int b) {    tilemap[0].SetColor(r, g, b); tilemap[1].SetColor(r, g, b); tilemap[2].SetColor(r, g, b); }
 };
 
 #endif /* defined(__RPG__Map__) */

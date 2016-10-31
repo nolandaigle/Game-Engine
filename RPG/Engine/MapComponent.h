@@ -29,6 +29,7 @@ public:
     int GetWidth();
     int GetHeight();
     void Multiply();
+    void SetColor( int r, int g, int b ) { map->SetColor(r, g, b); }
     
     int x, y, w, h;
 };

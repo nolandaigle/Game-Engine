@@ -31,6 +31,7 @@ class EntityLibrary
     
     float fpsTimer;
     float fps;
+    
 
 public:
     EntityLibrary();

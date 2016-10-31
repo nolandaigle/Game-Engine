@@ -66,8 +66,16 @@ void Game_Scene::Turn()
 
 void Game_Scene::Display()
 {
+    
+    system->GetWindow()->draw(map->tilemap[0]);
+    
     //Entity Library display
     eL->Display();
+    
+    system->GetWindow()->draw(map->tilemap[1]);
+
+    system->GetWindow()->draw(map->tilemap[2]);
+
     
     //Run System's Display functions
     system->Display();

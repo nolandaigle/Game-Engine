@@ -11,6 +11,7 @@
 #include <fstream>
 #include <iostream>
 #include "EntityLibrary.h"
+#include "ResourcePath.hpp"
 
 Map::Map(System *_system)
 {
@@ -38,7 +39,6 @@ void Map::Load(std::string _filename )
     std::ifstream in(filename);
     
     Json::Value mapValue;
-    Json::Reader reader;
 
     in>>mapValue;
     
@@ -60,9 +60,12 @@ void Map::Load(std::string _filename )
     for (Json::Value::iterator it = mapValue["layers"].begin(); it != mapValue["layers"].end(); ++it)
     {
         
+        int tmtiles[100000];
+        int cur = 0;
+        
         int i = 0;
         if ( tileimage == "" )
-            tileimage = "CityTileset.png";
+            tileimage = "Tilesheet";
         
         for ( int y = 0; y < mapHeight; y++ )
         {
@@ -72,20 +75,16 @@ void Map::Load(std::string _filename )
                 
                 if ( type > 0 )
                 {
-                    int bx = type;
-                    int by = 0;
-                    
-                    while ( bx >= 128/16 )
-                    {
-                        bx -= tileWidth;
-                        by += 1;
-                    }
-                    
                     Entity *e = EntityLibrary::instance()->AddEntity(x*tileWidth,y*tileHeight, "Tile", false, (*it)["data"][i].asString() );
-//                    tiles.push_back(e);
                     e->SetLayer(layer);
+                    tmtiles[x+(y*mapWidth)] = (*it)["data"][i].asInt();
                     
                 }
+                else
+                {
+                    tmtiles[x+(y*mapWidth)] = -1;
+                }
+                
                 i++;
             }
         }
@@ -94,6 +93,9 @@ void Map::Load(std::string _filename )
         {
             EntityLibrary::instance()->AddEntity((*oit)["x"].asInt(),(int)(*oit)["y"].asInt(),(*oit)["name"].asString());
         }
+        
+        if (!tilemap[layer].load(resourcePath()+"Resources/Graphic/Tilesheet.png", sf::Vector2u(16, 16), tmtiles, mapWidth, mapHeight))
+            return -1;
         
         layer += 1;
     }
