@@ -43,3 +43,6 @@ end
 onKeyPress = function(e,k)
 	e:Message("Map", "Clones.json")
 end
+
+onKeyRelease = function(e,k)
+end

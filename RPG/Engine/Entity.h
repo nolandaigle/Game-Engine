@@ -34,6 +34,17 @@ private:
     luabridge::lua_State* luaState;
     char *turnScrFile;
     
+    //LuaRef update;
+    luabridge::LuaRef *bang;
+    luabridge::LuaRef *onKeyPress;
+    luabridge::LuaRef *onKeyRelease;
+    luabridge::LuaRef *update;
+    luabridge::LuaRef *lateUpdate;
+    luabridge::LuaRef *display;
+    luabridge::LuaRef *recieveMessage;
+    luabridge::LuaRef *recieveSignal;
+   // LuaRef input;
+    
     /* --- Entity INFO --- */
     std::string name;
     std::string type;
@@ -77,7 +88,7 @@ public:
     
     //SCRIPTING
     void LoadScript(char* filename);
-    bool RunScript(char* filename, luabridge::lua_State *s);
+    bool RunScript(char* filename);
     
     //Set Functions
     void SetName(std::string _name);

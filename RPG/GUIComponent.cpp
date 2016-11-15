@@ -15,7 +15,7 @@ GUIComponent::GUIComponent(int _x, int _y, System *_system ) : Component(_system
     y = _y;
     system = _system;
     
-    if ( !font.loadFromFile(resourcePath()+"Resources/Fonts/lunchds.ttf") )
+    if ( !font.loadFromFile(resourcePath()+"Resources/Fonts/Roboto-Medium.ttf") )
     {
     }
     text.setFont(font);

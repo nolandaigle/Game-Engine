@@ -19,7 +19,7 @@ Selector::Selector(int _x, int _y, std::string _name, System *_system)
     selL.Load("Resources/Graphic/GUI/ArrowL.png");
     selR.Load("Resources/Graphic/GUI/ArrowR.png");
     
-    if ( !font.loadFromFile(resourcePath()+"Resources/Fonts/Japan.ttf") )
+    if ( !font.loadFromFile(resourcePath()+"Resources/Fonts/hellovetica.ttf") )
     {
     }
     label.setFont(font);

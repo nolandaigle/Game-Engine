@@ -35,6 +35,7 @@ Entity::Entity(int _x, int _y, System *_system, bool _updating )
     dc = NULL;
     sc = NULL;
     scrC = NULL;
+    fC = NULL;
     transform = NULL;
     luaState = NULL;
     layer = 0;
@@ -45,6 +46,14 @@ Entity::Entity(int _x, int _y, System *_system, bool _updating )
     
     updating = _updating;
     displaying = true;
+    
+    recieveSignal = NULL;
+    recieveMessage = NULL;
+    update = NULL;
+    lateUpdate = NULL;
+    display = NULL;
+    onKeyPress = NULL;
+    onKeyRelease = NULL;
 }
 
 Entity::~Entity()
@@ -59,10 +68,16 @@ void Entity::Bang(std::string info )
     GetPath();
     //Loads that script
     LoadScript(turnScrFile);
-    RunScript(turnScrFile, luaState);
-    LuaRef bang = getGlobal(luaState, "bang");
-    if ( bang )
-        bang(this, info);
+    RunScript(turnScrFile);
+    
+    if (bang) {
+        try{
+            (*bang)(this, BangInfo);
+        }
+        catch (luabridge::LuaException const& e) {
+           // //std::cout << "LuaException: " << e.what() << std::endl;
+        }
+    }
 }
 
 void Entity::Turn()
@@ -71,17 +86,27 @@ void Entity::Turn()
     mInput();
     
     //Runs the Update function in the entity's lua script
-    LuaRef update = getGlobal(luaState, "update");
-    if ( update )
-        update(this);
+    if (update) {
+        try{
+            (*update)(this);
+        }
+        catch (luabridge::LuaException const& e) {
+            //std::cout << "LuaException: " << e.what() << std::endl;
+        }
+    }
 }
 
 void Entity::LateTurn()
 {
     //Runs the Update function in the entity's lua script
-    LuaRef lateUpdate = getGlobal(luaState, "lateUpdate");
-    if ( lateUpdate )
-        lateUpdate(this);
+    if (lateUpdate) {
+        try{
+            (*lateUpdate)(this);
+        }
+        catch (luabridge::LuaException const& e) {
+           // //std::cout << "LuaException: " << e.what() << std::endl;
+        }
+    }
 }
 
 void Entity::Display()
@@ -89,9 +114,14 @@ void Entity::Display()
     //If the entity is displaying, run its lua script
     if (Displaying())
     {
-        LuaRef display = getGlobal(luaState, "display");
-        if ( display )
-            display(this);
+        if (display) {
+            try{
+                (*display)(this);
+            }
+            catch (luabridge::LuaException const& e) {
+            //     //std::cout << "LuaException: " << e.what() << std::endl;
+            }
+        }
     }
 }
 
@@ -119,145 +149,697 @@ void Entity::Collapse()
     if (scrC)
         delete scrC;
     scrC = NULL;
+    if (fC)
+        delete fC;
+    fC = NULL;
     if (transform)
         delete transform;
     transform = NULL;
+    
+    delete bang;
+    delete recieveSignal;
+    delete recieveMessage;
+    delete update;
+    delete lateUpdate;
+    delete display;
+    delete onKeyPress;
+    delete onKeyRelease;
+    
+    lua_close(luaState);
 }
 
 void Entity::Input(sf::Event *event)
 {
     if ( event->type == sf::Event::KeyPressed )
     {
-        LuaRef onKeyPress = getGlobal(luaState, "onKeyPress");
         if ( onKeyPress )
         {
             if ( event->key.code == sf::Keyboard::A )
-                onKeyPress(this,"a");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "a");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                  //      //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::B )
-                onKeyPress(this,"b");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "b");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                    //    //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::C )
-                onKeyPress(this,"c");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "c");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                       // //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::D )
-                onKeyPress(this,"d");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "d");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                      //  //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::E )
-                onKeyPress(this,"e");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "e");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::F )
-                onKeyPress(this,"f");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "f");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::G )
-                onKeyPress(this,"g");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "g");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::H )
-                onKeyPress(this,"h");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "h");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::I )
-                onKeyPress(this,"i");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "i");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::J )
-                onKeyPress(this,"j");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "j");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::K )
-                onKeyPress(this,"k");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "k");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::L )
-                onKeyPress(this,"l");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "l");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::M )
-                onKeyPress(this,"m");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "m");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::N )
-                onKeyPress(this,"n");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "n");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::O )
-                onKeyPress(this,"o");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "o");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::P )
-                onKeyPress(this,"p");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "p");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::Q )
-                onKeyPress(this,"q");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "q");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::R )
-                onKeyPress(this,"r");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "r");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::S )
-                onKeyPress(this,"s");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "s");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::T )
-                onKeyPress(this,"t");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "t");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::U )
-                onKeyPress(this,"u");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "u");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::V )
-                onKeyPress(this,"v");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "v");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::W )
-                onKeyPress(this,"w");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "w");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::X )
-                onKeyPress(this,"x");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "x");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::Y )
-                onKeyPress(this,"y");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "y");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::Z )
-                onKeyPress(this,"z");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "z");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::Up )
-                onKeyPress(this,"up");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "up");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::Down )
-                onKeyPress(this,"down");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "down");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::Left )
-                onKeyPress(this,"left");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "left");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::Right )
-                onKeyPress(this,"right");
+            {
+                if (onKeyPress) {
+                    try{
+                        (*onKeyPress)(this, "right");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
         }
     }
     if ( event->type == sf::Event::KeyReleased )
     {
-        LuaRef onKeyRelease = getGlobal(luaState, "onKeyRelease");
         if ( onKeyRelease )
         {
             if ( event->key.code == sf::Keyboard::A )
-                onKeyRelease(this,"a");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "a");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::B )
-                onKeyRelease(this,"b");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "b");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::C )
-                onKeyRelease(this,"c");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "c");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::D )
-                onKeyRelease(this,"d");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "d");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::E )
-                onKeyRelease(this,"e");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "e");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::F )
-                onKeyRelease(this,"f");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "f");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::G )
-                onKeyRelease(this,"g");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "g");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::H )
-                onKeyRelease(this,"h");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "h");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::I )
-                onKeyRelease(this,"i");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "i");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::J )
-                onKeyRelease(this,"j");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "j");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::K )
-                onKeyRelease(this,"k");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "k");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::L )
-                onKeyRelease(this,"l");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "l");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::M )
-                onKeyRelease(this,"m");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "m");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::N )
-                onKeyRelease(this,"n");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "n");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::O )
-                onKeyRelease(this,"o");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "o");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::P )
-                onKeyRelease(this,"p");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "p");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::Q )
-                onKeyRelease(this,"q");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "q");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::R )
-                onKeyRelease(this,"r");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "r");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::S )
-                onKeyRelease(this,"s");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "s");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::T )
-                onKeyRelease(this,"t");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "t");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::U )
-                onKeyRelease(this,"u");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "u");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::V )
-                onKeyRelease(this,"v");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "v");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::W )
-                onKeyRelease(this,"w");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "w");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::X )
-                onKeyRelease(this,"x");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "x");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::Y )
-                onKeyRelease(this,"y");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "y");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::Z )
-                onKeyRelease(this,"z");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "z");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::Up )
-                onKeyRelease(this,"up");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "up");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::Down )
-                onKeyRelease(this,"down");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "down");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::Left )
-                onKeyRelease(this,"left");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "left");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
             if ( event->key.code == sf::Keyboard::Right )
-                onKeyRelease(this,"right");
+            {
+                if (onKeyRelease) {
+                    try{
+                        (*onKeyRelease)(this, "right");
+                    }
+                    catch (luabridge::LuaException const& e) {
+                        //std::cout << "LuaException: " << e.what() << std::endl;
+                    }
+                }
+            }
         }
     }
 
@@ -566,17 +1148,27 @@ void Entity::LoadScript(char* filename)
     .endClass();
 }
 
-bool Entity::RunScript(char* filename, lua_State *s)
+bool Entity::RunScript(char* filename)
 {
-    if ( s )
+    if ( luaState )
     {
-        if (luaL_loadfile(s, filename) ||
-            lua_pcall(s, 0, 0, 0)) {
+        if (luaL_loadfile(luaState, filename) ||
+            lua_pcall(luaState, 0, 0, 0)) {
             std::cout<<"Couldn't load file for "<<name<<std::endl;
             return false;
         }
         else
         {
+            bang = new LuaRef(getGlobal(luaState, "bang"));
+            update = new LuaRef(getGlobal(luaState, "update"));
+            lateUpdate = new LuaRef(getGlobal(luaState, "lateUpdate"));
+            onKeyPress = new LuaRef(getGlobal(luaState, "onKeyPress"));
+            onKeyRelease = new LuaRef(getGlobal(luaState, "onKeyRelease"));
+            display = new LuaRef(getGlobal(luaState, "display"));
+            recieveSignal = new LuaRef(getGlobal(luaState, "recieveSignal"));
+            recieveMessage = new LuaRef(getGlobal(luaState, "recieveMessage"));
+
+
             return true;
         }
     }
@@ -703,9 +1295,14 @@ void Entity::Signal(std::string signal)
 
 void Entity::RecieveSignal(std::string signal)
 {
-    LuaRef recieveSignal = getGlobal(luaState, "recieveSignal");
-    if ( recieveSignal )
-        recieveSignal(this, signal);
+    if (recieveSignal) {
+        try{
+            (*recieveSignal)(this, signal);
+        }
+        catch (luabridge::LuaException const& e) {
+            //std::cout << "LuaException: " << e.what() << std::endl;
+        }
+    }
 }
 
 void Entity::Message(std::string entity, std::string message)
@@ -715,9 +1312,14 @@ void Entity::Message(std::string entity, std::string message)
 
 void Entity::RecieveMessage(std::string message)
 {
-    LuaRef recieveMessage = getGlobal(luaState, "recieveMessage");
-    if ( recieveMessage )
-        recieveMessage(this, message);
+    if (recieveMessage) {
+        try{
+            (*recieveMessage)(this, message);
+        }
+        catch (luabridge::LuaException const& e) {
+          //  //std::cout << "LuaException: " << e.what() << std::endl;
+        }
+    }
 }
 
 void Entity::RemoveEntity(std::string e)
